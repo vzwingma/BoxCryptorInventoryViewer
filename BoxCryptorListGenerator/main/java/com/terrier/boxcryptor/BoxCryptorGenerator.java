@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
 public class BoxCryptorGenerator {
@@ -17,40 +17,47 @@ public class BoxCryptorGenerator {
 
 	private File repertoireChiffre;
 	private File repertoireNonChiffre;
-
+	private Calendar startTraitement = Calendar.getInstance();
 	
 	private static final String INVENTORY_FILENAME = "liste_Fichiers_BoxCryptor.yml";
+	
+
+	
 	/**
 	 * Classe main
 	 * @param args
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		BoxCryptorGenerator bcx = new BoxCryptorGenerator();
 
+		System.out.println("Début de la génération de l'inventaire");
 		if(bcx.getPaths(args)){
 			bcx.generateInventory();
 		}
 		else{
 			System.err.println("******** ERREUR : Les répertoires sont incorrects ********");
 		}
-
+		
 	}
 
 	/**
 	 * Génération de l'inventaire
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public void generateInventory() throws IOException{
-
-		System.out.println("Début de la génération de l'inventaire");
+	public void generateInventory() throws Exception{
+		
 		// Lecture de l'inventaire
 		BCInventaireRepertoire inventaire = getFileInventory();
+		printDelayFromBeginning("Read file Inventory");
 		// Création de l'inventaire
-		generateInventoryForDirectory(inventaire, this.repertoireChiffre, this.repertoireNonChiffre);
+		DirectoryInventoryGeneratorCallable inventory = new DirectoryInventoryGeneratorCallable(inventaire, this.repertoireChiffre, this.repertoireNonChiffre);
+		inventaire = inventory.call();
+		printDelayFromBeginning("Generate Inventory");
 		// Ecriture de l'inventaire
 		writeInventory(inventaire);
-		System.out.println("Fin de la génération de l'inventaire");
+		printDelayFromBeginning("Dump Inventory");
+		
 
 	}
 
@@ -87,6 +94,7 @@ public class BoxCryptorGenerator {
 		System.out.println("> Le répertoire (" + repertoireNonChiffre.isDirectory() + ") " + repertoireNonChiffre.getName() + "existe " + repertoireNonChiffre.exists());
 
 		entree.close();
+		printDelayFromBeginning("Get Path");
 		return repertoireChiffre.exists() && repertoireChiffre.isDirectory() && repertoireNonChiffre.exists()  && repertoireNonChiffre.isDirectory();
 	}
 
@@ -117,47 +125,6 @@ public class BoxCryptorGenerator {
 	}
 
 
-
-
-
-	/**
-	 * Génération de la liste pour le répertoire
-	 * @param directoryChiffre répertoire chiffré
-	 * @param directoryNonChiffre répertoire non chiffré
-	 * @param inventoryWriter writer
-	 * @param padding padding de répertoire
-	 * @throws IOException erreur
-	 */
-	private void generateInventoryForDirectory(final BCInventaireRepertoire inventaireR, final File repertoireChiffre, final File repertoireNonChiffre) throws IOException{
-
-		// Parcours du répertoire chiffré
-		for (File fichierChiffre : repertoireChiffre.listFiles()) {
-			// Recherche du répertoire non chiffré
-			boolean found = false;
-			for (File fichierNonChiffre : repertoireNonChiffre.listFiles()) {
-				if(fichierNonChiffre.lastModified() == fichierChiffre.lastModified()){
-					found = true;
-
-			//		System.out.println("[" + fichierChiffre.getName() + "] > ["+fichierNonChiffre.getName()+"]");
-
-					if(fichierChiffre.isDirectory() && fichierNonChiffre.isDirectory()){
-						BCInventaireRepertoire ssRepertoire = inventaireR.getBCInventaireSousRepertoire(fichierChiffre, fichierNonChiffre);
-						generateInventoryForDirectory(ssRepertoire, fichierChiffre, fichierNonChiffre);
-						inventaireR.addSSRepertoire(ssRepertoire);
-					}
-					else{
-						BCInventaireFichier fichier = new BCInventaireFichier(fichierChiffre.getName(), fichierNonChiffre.getName());
-						inventaireR.addFichier(fichier);
-					}
-					break;
-				}
-			}
-			if(!found && !fichierChiffre.getName().equals("FolderKey.bch")){
-				System.err.println("[" + fichierChiffre.getName() + "] > NON TROUVE");
-			}
-		}
-	}
-	
 	
 	/**
 	 * Ecriture de l'inventaire (dump)
@@ -172,5 +139,10 @@ public class BoxCryptorGenerator {
 		inventoryWriter.flush();
 		inventoryWriter.close();
 		
+	}
+	
+	
+	private void printDelayFromBeginning(String traitement){
+		System.out.println("["+traitement+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis())  + " ms");
 	}
 }
