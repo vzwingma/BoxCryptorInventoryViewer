@@ -38,7 +38,7 @@ public class BoxCryptorGenerator {
 		else{
 			System.err.println("******** ERREUR : Les répertoires sont incorrects ********");
 		}
-		
+		System.out.println("Fin de la génération de l'inventaire");
 	}
 
 	/**

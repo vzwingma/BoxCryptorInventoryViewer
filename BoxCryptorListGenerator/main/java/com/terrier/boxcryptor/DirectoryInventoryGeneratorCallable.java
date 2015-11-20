@@ -82,6 +82,7 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 			inventaireR.addSSRepertoire(ssRepertoire);
 		}
 		printDelayFromBeginning(repertoiresNonChiffre.getName());
+		executorInventory.shutdownNow();
 		return inventaireR;
 	}
 
