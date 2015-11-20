@@ -1,7 +1,6 @@
 package com.terrier.boxcryptor;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -55,12 +54,18 @@ public class BoxCryptorGenerator {
 		printDelayFromBeginning("Read file Inventory");
 		
 		// Création de l'inventaire
-		DirectoryInventoryGeneratorCallable inventory = new DirectoryInventoryGeneratorCallable(null, inventaire, this.repertoireChiffre, this.repertoireNonChiffre);
-		inventaire = inventory.call();
+		ExecutorService threadsPool = Executors.newFixedThreadPool(100);
+		DirectoryInventoryStreamGeneratorCallable inventory = new DirectoryInventoryStreamGeneratorCallable(
+				threadsPool,
+				this.repertoireNonChiffre.getName(), 
+				this.repertoireChiffre.getAbsolutePath(), this.repertoireNonChiffre.getAbsolutePath());
+		BCInventaireRepertoire inventaireNew = inventory.call();
+		threadsPool.shutdown();
 		printDelayFromBeginning("Generate Inventory");
 		
+		
 		// Ecriture de l'inventaire
-		writeInventory(inventaire);
+		writeInventory(inventaireNew);
 		printDelayFromBeginning("Dump Inventory");
 	}
 
@@ -94,7 +99,7 @@ public class BoxCryptorGenerator {
 			cheminNonChiffre = new String(entree.nextLine().getBytes(), Charset.forName("UTF-8"));
 		}
 		repertoireNonChiffre = new File(cheminNonChiffre);
-		System.out.println("> Le répertoire (" + repertoireNonChiffre.isDirectory() + ") " + repertoireNonChiffre.getName() + "existe " + repertoireNonChiffre.exists());
+		System.out.println("> Le répertoire (" + repertoireNonChiffre.isDirectory() + ") " + repertoireNonChiffre.getName() + " existe " + repertoireNonChiffre.exists());
 
 		entree.close();
 		printDelayFromBeginning("Get Path");
@@ -111,17 +116,17 @@ public class BoxCryptorGenerator {
 		// This will output the full path where the file will be written to...
 		File inventoryFile = new File(repertoireNonChiffre, INVENTORY_FILENAME);
 		BCInventaireRepertoire repertoire;
-		if(inventoryFile.exists()){
-			System.out.println("Enregistrement de la liste dans " + inventoryFile.getCanonicalPath());
-			
-			Yaml yml = new Yaml();
-			repertoire = yml.loadAs(new FileInputStream(inventoryFile), BCInventaireRepertoire.class);
-			
-		}
-		else{
+//		if(inventoryFile.exists()){
+//			System.out.println("Enregistrement de la liste dans " + inventoryFile.getCanonicalPath());
+//			
+//			Yaml yml = new Yaml();
+//			repertoire = yml.loadAs(new FileInputStream(inventoryFile), BCInventaireRepertoire.class);
+//			
+//		}
+//		else{
 			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
 			repertoire  = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
-		}
+//		}
 		
 		return repertoire;
 
