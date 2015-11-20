@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -22,7 +24,8 @@ public class BoxCryptorGenerator {
 	private static final String INVENTORY_FILENAME = "liste_Fichiers_BoxCryptor.yml";
 	
 
-	
+
+
 	/**
 	 * Classe main
 	 * @param args
@@ -50,15 +53,15 @@ public class BoxCryptorGenerator {
 		// Lecture de l'inventaire
 		BCInventaireRepertoire inventaire = getFileInventory();
 		printDelayFromBeginning("Read file Inventory");
+		
 		// Création de l'inventaire
-		DirectoryInventoryGeneratorCallable inventory = new DirectoryInventoryGeneratorCallable(inventaire, this.repertoireChiffre, this.repertoireNonChiffre);
+		DirectoryInventoryGeneratorCallable inventory = new DirectoryInventoryGeneratorCallable(null, inventaire, this.repertoireChiffre, this.repertoireNonChiffre);
 		inventaire = inventory.call();
 		printDelayFromBeginning("Generate Inventory");
+		
 		// Ecriture de l'inventaire
 		writeInventory(inventaire);
 		printDelayFromBeginning("Dump Inventory");
-		
-
 	}
 
 	//	"D:\\Perso\\eBooks"

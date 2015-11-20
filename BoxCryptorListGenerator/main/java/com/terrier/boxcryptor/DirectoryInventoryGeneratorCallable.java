@@ -16,6 +16,7 @@ import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
 /**
+ * Callable d'un inventaire d'un répertoire
  * @author vzwingma
  *
  */
@@ -27,7 +28,10 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 	private File repertoiresNonChiffre;
 	private Calendar startTraitement;
 
-	private ExecutorService executorInventory = Executors.newFixedThreadPool(10);
+	// Pool de threads
+	private ExecutorService executorPool;
+	// Parent
+	private DirectoryInventoryGeneratorCallable parent;
 
 	/**
 	 * Générable 
@@ -35,10 +39,11 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 	 * @param repertoireChiffre 
 	 * @param repertoireNonChiffre
 	 */
-	public DirectoryInventoryGeneratorCallable(final BCInventaireRepertoire inventaireR, final File repertoireChiffre, final File repertoiresNonChiffre){
+	public DirectoryInventoryGeneratorCallable(final DirectoryInventoryGeneratorCallable parent, final BCInventaireRepertoire inventaireR, final File repertoireChiffre, final File repertoiresNonChiffre){
 		this.inventaireR = inventaireR;
 		this.repertoireChiffre = repertoireChiffre;
 		this.repertoiresNonChiffre = repertoiresNonChiffre;
+		this.parent = parent;
 	}
 
 
@@ -57,7 +62,10 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 			if(fichierChiffre.isDirectory()){
 				for (File repertoireNonChiffre : repertoiresNonChiffre.listFiles()) {
 					if(repertoireNonChiffre.isDirectory() && fichierChiffre.lastModified() == repertoireNonChiffre.lastModified()){
-						listeExecSousRepertoires.add(executorInventory.submit(new DirectoryInventoryGeneratorCallable(this.inventaireR, fichierChiffre, repertoireNonChiffre)));						
+						listeExecSousRepertoires.add(
+								getExecutorPool().submit(
+										new DirectoryInventoryGeneratorCallable(this, this.inventaireR, fichierChiffre, repertoireNonChiffre))
+								);						
 					}
 				}
 			}
@@ -76,19 +84,50 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 		}
 
 
-		// Récupération des sous répertoires
+		// Récupération des résultats des sous répertoires
 		for (Future<BCInventaireRepertoire> resultatSousRepertoire : listeExecSousRepertoires) {
 			BCInventaireRepertoire ssRepertoire = resultatSousRepertoire.get();
 			inventaireR.addSSRepertoire(ssRepertoire);
 		}
-		printDelayFromBeginning(repertoiresNonChiffre.getName());
-		executorInventory.shutdownNow();
+		printDelayTraitementFromBeginning();
+
+		if(this.parent == null && this.executorPool != null){
+			this.executorPool.shutdownNow();
+		}
 		return inventaireR;
 	}
 
 
+	/**
+	 * @return le nom du traitement en cours
+	 */
+	private String getTraitementName(){
+		StringBuilder bf = new StringBuilder();
+		if(this.parent != null){
+			bf.append(this.parent.getTraitementName()).append("|");
+		}
+		bf.append(this.repertoiresNonChiffre.getName());
+		return bf.toString();
+	}
+	
 
-	private void printDelayFromBeginning(String traitement){
-		System.out.println("THREAD ["+traitement+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis())  + " ms");
+	private void printDelayTraitementFromBeginning(){
+		System.out.println("THREAD ["+getTraitementName()+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis())  + " ms");
+	}
+
+
+	/**
+	 * @return le pool d'executor
+	 */
+	private ExecutorService getExecutorPool(){
+		if(this.parent == null){
+			if(this.executorPool == null){
+				this.executorPool = Executors.newFixedThreadPool(100);
+			}
+			return this.executorPool;
+		}
+		else{
+			return this.parent.getExecutorPool();
+		}
 	}
 }
