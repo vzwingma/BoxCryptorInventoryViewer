@@ -39,10 +39,11 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 	 * @param repertoireChiffre 
 	 * @param repertoireNonChiffre
 	 */
-	public DirectoryInventoryGeneratorCallable(final DirectoryInventoryGeneratorCallable parent, final BCInventaireRepertoire inventaireR, final File repertoireChiffre, final File repertoiresNonChiffre){
-		this.inventaireR = inventaireR;
+	public DirectoryInventoryGeneratorCallable(final DirectoryInventoryGeneratorCallable parent, final File repertoireChiffre, final File repertoiresNonChiffre){
+		//this.inventaireR = inventaireR;
 		this.repertoireChiffre = repertoireChiffre;
 		this.repertoiresNonChiffre = repertoiresNonChiffre;
+		this.inventaireR = new BCInventaireRepertoire(this.repertoireChiffre.getName(), this.repertoiresNonChiffre.getName());
 		this.parent = parent;
 	}
 
@@ -64,7 +65,7 @@ public class DirectoryInventoryGeneratorCallable implements Callable<BCInventair
 					if(repertoireNonChiffre.isDirectory() && fichierChiffre.lastModified() == repertoireNonChiffre.lastModified()){
 						listeExecSousRepertoires.add(
 								getExecutorPool().submit(
-										new DirectoryInventoryGeneratorCallable(this, this.inventaireR, fichierChiffre, repertoireNonChiffre))
+										new DirectoryInventoryGeneratorCallable(this, fichierChiffre, repertoireNonChiffre))
 								);						
 					}
 				}
