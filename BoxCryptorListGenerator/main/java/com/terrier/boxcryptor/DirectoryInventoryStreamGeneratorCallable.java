@@ -48,12 +48,17 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 	 * @param repertoireChiffre 
 	 * @param repertoireNonChiffre
 	 */
-	public DirectoryInventoryStreamGeneratorCallable(final ExecutorService executorPool, final String nomTraitementParent, final String absRepertoireChiffre, final String absRepertoireNonChiffre){
+	public DirectoryInventoryStreamGeneratorCallable(final ExecutorService executorPool, final String nomTraitementParent, final BCInventaireRepertoire inventaireExistant, final String absRepertoireChiffre, final String absRepertoireNonChiffre){
 		this.absRepertoireChiffre = absRepertoireChiffre;
 		this.absRepertoireNonChiffre = absRepertoireNonChiffre;
+		if(inventaireExistant != null){
+			this.inventaireR = inventaireExistant;
+		}
+		else{
 		this.inventaireR = new BCInventaireRepertoire(
 				FileSystems.getDefault().getPath(this.absRepertoireChiffre).getFileName().toString(), 
-				FileSystems.getDefault().getPath(this.absRepertoireNonChiffre).getFileName().toString());		
+				FileSystems.getDefault().getPath(this.absRepertoireNonChiffre).getFileName().toString());
+		}
 		this.executorPool = executorPool;
 		this.nomTraitementParent = nomTraitementParent;
 	}
@@ -83,6 +88,7 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 										new DirectoryInventoryStreamGeneratorCallable(
 												this.executorPool,
 												this.nomTraitementParent + "|" + sousRepertoireNonChiffre.getFileName().toString(), 
+												this.inventaireR.getBCInventaireSousRepertoire(sousRepertoireChiffre, sousRepertoireNonChiffre),
 												sousRepertoireChiffre.toFile().getAbsolutePath(), sousRepertoireNonChiffre.toFile().getAbsolutePath()))
 								);						
 					}

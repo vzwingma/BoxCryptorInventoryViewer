@@ -1,6 +1,6 @@
 package com.terrier.boxcryptor.objects;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,11 +54,11 @@ public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 	 * Ajoute un répertoire au répertoire
 	 * @param repertoireChiffre
 	 */
-	public BCInventaireRepertoire getBCInventaireSousRepertoire(File repertoireChiffre, File repertoireNonChiffre){
+	public BCInventaireRepertoire getBCInventaireSousRepertoire(Path repertoireChiffre, Path repertoireNonChiffre){
 		
-		String keySousRepertoire = getCleMap(repertoireNonChiffre.getName());
+		String keySousRepertoire = getCleMap(repertoireNonChiffre.getFileName().toString());
 		if(this.mapInventaireSousRepertoires.get(keySousRepertoire) == null){
-			BCInventaireRepertoire ssRepertoire = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
+			BCInventaireRepertoire ssRepertoire = new BCInventaireRepertoire(repertoireChiffre.getFileName().toString(), repertoireNonChiffre.getFileName().toString());
 			this.mapInventaireSousRepertoires.put(ssRepertoire.getCleMap(), ssRepertoire);
 		}
 		return this.mapInventaireSousRepertoires.get(keySousRepertoire);
