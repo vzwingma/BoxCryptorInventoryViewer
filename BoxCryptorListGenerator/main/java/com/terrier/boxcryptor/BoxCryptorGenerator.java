@@ -4,22 +4,35 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
+import com.terrier.boxcryptor.objects.BCInventoryItemView;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  * Générateur d'inventaire Boxcryptor
  * @author vzwingma
  *
  */
-public class BoxCryptorGenerator {
+public class BoxCryptorGenerator extends Application {
 
 	// Répertoire chiffré
 	private File repertoireChiffre;
@@ -30,30 +43,37 @@ public class BoxCryptorGenerator {
 	
 	private static final String INVENTORY_FILENAME = "liste_Fichiers_BoxCryptor.yml";
 	
-
+	private static BCInventaireRepertoire inventaireNew;
 	/**
 	 * Classe main
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
+		
+		System.setProperty("file.encoding","UTF-8");
+		Field charset = Charset.class.getDeclaredField("defaultCharset");
+		charset.setAccessible(true);
+		charset.set(null,null);
+		
 		BoxCryptorGenerator bcx = new BoxCryptorGenerator();
 
 		System.out.println("Début de la génération de l'inventaire");
 		if(bcx.getPaths(args)){
-			bcx.generateInventory();
+			inventaireNew = bcx.generateInventory();
 		}
 		else{
 			System.err.println("******** ERREUR : Les répertoires sont incorrects ********");
 		}
 		System.out.println("Fin de la génération de l'inventaire");
+	//	launch();
 	}
 
 	/**
 	 * Génération de l'inventaire
 	 * @throws Exception 
 	 */
-	public void generateInventory() throws Exception{
+	public BCInventaireRepertoire generateInventory() throws Exception{
 		
 		// Lecture de l'inventaire
 		BCInventaireRepertoire inventaire = getFileInventory();
@@ -75,6 +95,7 @@ public class BoxCryptorGenerator {
 		// Ecriture de l'inventaire
 		writeInventory(inventaireNew);
 		printDelayFromBeginning("Dump Inventory");
+		return inventaireNew;
 	}
 
 	//	"D:\\Perso\\eBooks"
@@ -135,9 +156,7 @@ public class BoxCryptorGenerator {
 			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
 			repertoire  = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
 		}
-		
 		return repertoire;
-
 	}
 
 
@@ -158,7 +177,62 @@ public class BoxCryptorGenerator {
 	}
 	
 	
+	/**
+	 * @param traitement
+	 */
 	private void printDelayFromBeginning(String traitement){
 		System.out.println("["+traitement+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis())  + " ms");
+	}
+
+	
+
+	
+	
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle("Inventory Viewer");        
+	
+		
+		TreeItem<BCInventoryItemView> rootItem  = viewDirectoryInventory(inventaireNew);
+		TreeView<BCInventoryItemView> tree = new TreeView<BCInventoryItemView> (rootItem);
+		tree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<BCInventoryItemView>>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends TreeItem<BCInventoryItemView>> observable, TreeItem<BCInventoryItemView> oldValue, TreeItem<BCInventoryItemView> newValue)
+            {
+            	
+            	newValue.getValue().alternateMessageView();
+            	System.out.println("Alternate : " + newValue.getValue().toString());
+            }
+        });
+		
+		
+		
+		StackPane root = new StackPane();
+		root.getChildren().add(tree);
+		primaryStage.setScene(new Scene(root, 500, 550));
+		primaryStage.show();
+		
+	}
+	
+	
+	/**
+	 * View directory inventaire
+	 * @param inventaireRepertoire  inventaireRépertoire
+	 */
+	private TreeItem<BCInventoryItemView> viewDirectoryInventory(BCInventaireRepertoire inventaireRepertoire){
+		TreeItem<BCInventoryItemView> repertoireItem = new TreeItem<BCInventoryItemView> (new BCInventoryItemView(inventaireRepertoire.get_NomFichierClair(), inventaireRepertoire.get_NomFichierChiffre()));
+		repertoireItem.setExpanded(true);
+		for (BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
+			repertoireItem.getChildren().add(
+					new TreeItem<BCInventoryItemView>(new BCInventoryItemView(inventaireFichier.get_NomFichierClair(), inventaireFichier.get_NomFichierChiffre())));
+		}
+		for (BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
+			repertoireItem.getChildren().add(viewDirectoryInventory(inventaireSsRepertoire));
+		}
+		return repertoireItem;
 	}
 }
