@@ -73,11 +73,6 @@ public class BoxCryptorInventoryGenerator {
 		Utils.printDelayFromBeginning("Dump Inventory", this.startTraitement);
 	}
 
-	//	"D:\\Perso\\eBooks"
-	//	"X:\\eBooks"
-
-
-
 	/**
 	 * Lecture de l'inventaire existant pour mise à jour
 	 * @throws IOException
