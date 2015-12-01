@@ -47,8 +47,8 @@ public class BoxCryptorInventoryManager {
 
 		if(InventoryCommandEnum.GENERATE.equals(commande)){
 			
-			String cheminChiffre    = getPaths(args != null && args.length > 1 ? args[0] : null, true);	
-			String cheminNonChiffre = getPaths(args != null && args.length > 2 ? args[1] : null, true);
+			String cheminChiffre    = getPaths(args != null && args.length > 1 ? args[1] : null, true);	
+			String cheminNonChiffre = getPaths(args != null && args.length > 2 ? args[2] : null, true);
 		
 			BoxCryptorInventoryGenerator bcx = new BoxCryptorInventoryGenerator();
 			bcx.startInventory(cheminChiffre, cheminNonChiffre);
@@ -56,7 +56,7 @@ public class BoxCryptorInventoryManager {
 		}
 		else if(InventoryCommandEnum.VIEW.equals(commande)){
 			
-			String cheminNonChiffre = getPaths(args != null && args.length > 2 ? args[1] : null, true);
+			String cheminNonChiffre = getPaths(args != null && args.length > 1 ? args[1] : null, true);
 			
 			BoxCryptorInventoryViewer bxcV = new BoxCryptorInventoryViewer();
 			bxcV.startViewInventory(cheminNonChiffre);
@@ -65,7 +65,7 @@ public class BoxCryptorInventoryManager {
 		else{
 			System.out.println("**** USAGE ****");
 			System.out.println(" -- generate [Répertoire chiffré (D:)] [Répertoire non chiffré (X:)]");
-			System.out.println(" -- view [Répertoire non chiffré]");
+			System.out.println(" -- view [Répertoire non chiffré (D:)]");
 		}
 	}
 

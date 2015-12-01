@@ -7,17 +7,17 @@ import java.util.List;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
-import com.terrier.boxcryptor.objects.BCInventoryItemView;
 import com.terrier.boxcryptor.utils.Utils;
+import com.terrier.boxcryptor.viewer.objects.InventoryCellValueFactory;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -27,10 +27,6 @@ import javafx.stage.Stage;
  *
  */
 public class BoxCryptorInventoryViewer extends Application  {
-
-	// Répertoire non chiffré
-	private String cheminNonChiffre;
-
 
 	/**
 	 * Start of inventory viewer
@@ -45,33 +41,39 @@ public class BoxCryptorInventoryViewer extends Application  {
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		/**
+		 * Prepare inventory items
+		 */
 		BCInventaireRepertoire inventory = loadFileInventory();
+		TreeItem<AbstractBCInventaireStructure> inventoryItems  = viewDirectoryInventory(inventory);
+
+		
+		/**
+		 * Create table
+		 */
+		primaryStage.setTitle("Inventory Viewer [" + inventory.get_NomFichierClair()  + "]");        
+		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(inventoryItems);
+		
+		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
+		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
+		
+		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
+		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
+		
+		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
+	
 
 		/**
 		 * Show Inventory
 		 */
-		primaryStage.setTitle("Inventory Viewer " + inventory.get_NomFichierClair());        
-
-		TreeItem<BCInventoryItemView> rootItem  = viewDirectoryInventory(inventory);
-		TreeView<BCInventoryItemView> tree = new TreeView<BCInventoryItemView> (rootItem);
-		tree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<BCInventoryItemView>>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends TreeItem<BCInventoryItemView>> observable, TreeItem<BCInventoryItemView> oldValue, TreeItem<BCInventoryItemView> newValue)
-			{
-
-				newValue.getValue().alternateMessageView();
-				System.out.println("Alternate : " + newValue.getValue().toString());
-			}
-		});
-
-
 		StackPane root = new StackPane();
-		root.getChildren().add(tree);
-		primaryStage.setScene(new Scene(root, 500, 550));
+		root.getChildren().add(treeTableView);
+		primaryStage.setScene(new Scene(root));
+		primaryStage.setMaximized(true);
 		primaryStage.show();
 	}
 
@@ -80,12 +82,12 @@ public class BoxCryptorInventoryViewer extends Application  {
 	 * View directory inventaire
 	 * @param inventaireRepertoire  inventaireRépertoire
 	 */
-	private TreeItem<BCInventoryItemView> viewDirectoryInventory(BCInventaireRepertoire inventaireRepertoire){
-		TreeItem<BCInventoryItemView> repertoireItem = new TreeItem<BCInventoryItemView> (new BCInventoryItemView(inventaireRepertoire.get_NomFichierClair(), inventaireRepertoire.get_NomFichierChiffre()));
+	private TreeItem<AbstractBCInventaireStructure> viewDirectoryInventory(BCInventaireRepertoire inventaireRepertoire){
+		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
 		repertoireItem.setExpanded(true);
 		for (BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
 			repertoireItem.getChildren().add(
-					new TreeItem<BCInventoryItemView>(new BCInventoryItemView(inventaireFichier.get_NomFichierClair(), inventaireFichier.get_NomFichierChiffre())));
+					new TreeItem<AbstractBCInventaireStructure>(inventaireFichier));
 		}
 		for (BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
 			repertoireItem.getChildren().add(viewDirectoryInventory(inventaireSsRepertoire));
@@ -105,7 +107,6 @@ public class BoxCryptorInventoryViewer extends Application  {
 		// Retrieve the directory paramter
 		String repertoireNonChiffre = null;
 		List<String> unnamedParameters = getParameters().getUnnamed();
-		System.out.println ("\nunnamedParameters -");
 		for (String unnamed : unnamedParameters){
 			repertoireNonChiffre = unnamed;
 		}
