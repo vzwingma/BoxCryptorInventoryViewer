@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.boxcryptor.filters;
+package com.terrier.boxcryptor.generate.filters;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream.Filter;

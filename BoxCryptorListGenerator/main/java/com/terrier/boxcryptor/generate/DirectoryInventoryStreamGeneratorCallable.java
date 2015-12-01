@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.boxcryptor;
+package com.terrier.boxcryptor.generate;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -15,8 +15,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import com.terrier.boxcryptor.filters.DirectoryFilter;
-import com.terrier.boxcryptor.filters.FileFilter;
+import com.terrier.boxcryptor.generate.filters.DirectoryFilter;
+import com.terrier.boxcryptor.generate.filters.FileFilter;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
