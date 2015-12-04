@@ -82,7 +82,7 @@ public class BCInventoryGenerator {
 			repertoire = BCUtils.loadYMLInventory(repertoireNonChiffre.getAbsolutePath());
 		}
 		else{
-			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Cr�ation du fichier");
+			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
 			repertoire  = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
 		}
 		return repertoire;

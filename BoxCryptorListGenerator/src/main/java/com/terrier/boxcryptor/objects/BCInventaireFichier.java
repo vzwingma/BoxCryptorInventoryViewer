@@ -1,7 +1,7 @@
 package com.terrier.boxcryptor.objects;
 
 /**
- * Représente un couple fichier clair/chiffré
+ * Reprï¿½sente un couple fichier clair/chiffrÃ©
  * @author vzwingma
  *
  */
@@ -14,7 +14,7 @@ public class BCInventaireFichier extends AbstractBCInventaireStructure {
 	
 	/**
 	 * Constructeur
-	 * @param nomFichierChiffre fichier chiffré
+	 * @param nomFichierChiffre fichier chiffrÃ©
 	 * @param nomFichierClair fichier en clair
 	 */
 	public BCInventaireFichier(String nomFichierChiffre, String nomFichierClair) {

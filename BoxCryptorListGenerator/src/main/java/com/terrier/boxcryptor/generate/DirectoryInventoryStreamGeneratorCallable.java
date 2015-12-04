@@ -21,20 +21,20 @@ import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
 /**
- * Callable d'un inventaire d'un répertoire
+ * Callable d'un inventaire d'un rÃ©pertoire
  * @author vzwingma
  *
  */
 public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInventaireRepertoire> {
 
 
-	// Inventaire du répertoire
+	// Inventaire du rÃ©pertoire
 	private BCInventaireRepertoire inventaireR;
-	// Répertoire chiffré
+	// RÃ©pertoire chiffrÃ©
 	private String absRepertoireChiffre;
-	// Répertoire non chiffré
+	// RÃ©pertoire non chiffrÃ©
 	private String absRepertoireNonChiffre;
-	// Démarrage du traitement
+	// DÃ©marrage du traitement
 	private Calendar startTraitement;
 
 	// Pool de threads
@@ -43,7 +43,7 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 	private String nomTraitementParent;
 
 	/**
-	 * Génération	
+	 * Gï¿½nï¿½ration	
 	 * @param parent callable parent
 	 * @param repertoireChiffre 
 	 * @param repertoireNonChiffre
@@ -72,10 +72,10 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 
 		this.startTraitement = Calendar.getInstance();
 
-		// Premier parcours pour trouver les sous répertoires et lancer les tâches correspondantes
+		// Premier parcours pour trouver les sous rÃ©pertoires et lancer les tÃ¢ches correspondantes
 		List<Future<BCInventaireRepertoire>> listeExecSousRepertoires = new ArrayList<Future<BCInventaireRepertoire>>();
 
-		// Parcours du répertoire non chiffré
+		// Parcours du rÃ©pertoire non chiffrÃ©
 		try {
 			DirectoryStream<Path> dsNonChiffre = Files.newDirectoryStream(FileSystems.getDefault().getPath(absRepertoireNonChiffre), new DirectoryFilter());
 			DirectoryStream<Path> dsChiffre;
@@ -110,7 +110,7 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 			e.printStackTrace();
 		}
 
-		// Récupération des résultats des sous répertoires
+		// RÃ©cupÃ©ration des rÃ©sultats des sous rÃ©pertoires
 		for (Future<BCInventaireRepertoire> resultatSousRepertoire : listeExecSousRepertoires) {
 			BCInventaireRepertoire ssRepertoire = resultatSousRepertoire.get();
 			inventaireR.addSSRepertoire(ssRepertoire);

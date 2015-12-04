@@ -4,6 +4,7 @@
 package com.terrier.boxcryptor.objects;
 
 /**
+ * Commands
  * @author vzwingma
  *
  */

@@ -19,6 +19,7 @@ import com.terrier.boxcryptor.viewer.BCInventoryViewer;
  */
 public class BoxCryptorInventoryManager {
 
+	
 
 	/**
 	 * Classe main

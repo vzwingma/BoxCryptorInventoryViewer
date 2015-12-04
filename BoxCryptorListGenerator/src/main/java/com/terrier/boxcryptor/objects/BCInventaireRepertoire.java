@@ -4,6 +4,11 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class of a directory in inventory
+ * @author vzwingma
+ *
+ */
 public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 
 
@@ -24,18 +29,18 @@ public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 	}
 
 	/**
-	 * Fichier dans le répertoire
+	 * Fichier dans le rÃ©pertoire
 	 */
 	Map<String, BCInventaireFichier> mapInventaireFichiers = new HashMap<String, BCInventaireFichier>();
 	
 	/**
-	 * Sous répertoires dans le répertoire
+	 * Sous rï¿½pertoires dans le rï¿½pertoire
 	 */
 	Map<String, BCInventaireRepertoire> mapInventaireSousRepertoires = new HashMap<String, BCInventaireRepertoire>();
 	
 
 	/**
-	 * Ajoute un sous répertoire au répertoire
+	 * Ajoute un sous rÃ©pertoire au rÃ©pertoire
 	 * @param inventaireRepertoire
 	 */
 	public void addSSRepertoire(BCInventaireRepertoire inventaireRepertoire){
@@ -43,7 +48,7 @@ public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 	}
 	
 	/**
-	 * Ajoute un fichier au répertoire
+	 * Ajoute un fichier au rÃ©pertoire
 	 * @param fichierChiffre
 	 */
 	public void addFichier(BCInventaireFichier fichierChiffre){
@@ -51,7 +56,7 @@ public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 	}
 	
 	/**
-	 * Ajoute un répertoire au répertoire
+	 * Ajoute un rÃ©pertoire au rÃ©pertoire
 	 * @param repertoireChiffre
 	 */
 	public BCInventaireRepertoire getBCInventaireSousRepertoire(Path repertoireChiffre, Path repertoireNonChiffre){

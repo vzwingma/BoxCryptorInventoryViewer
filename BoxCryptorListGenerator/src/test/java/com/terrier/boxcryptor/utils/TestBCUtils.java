@@ -10,6 +10,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 
 import org.junit.Test;
 
@@ -36,10 +38,19 @@ public class TestBCUtils {
 	
 	/**
 	 * Test dump and load YML file of inventory
-	 * @throws IOException
+	 * @throws IOException error
+	 * @throws SecurityException error 
+	 * @throws NoSuchFieldException  error
+	 * @throws IllegalAccessException  error
+	 * @throws IllegalArgumentException  error
 	 */
 	@Test
-	public void testDumpYaml() throws IOException{
+	public void testDumpYaml() throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		System.setProperty("file.encoding","UTF-8");
+		Field charset = Charset.class.getDeclaredField("defaultCharset");
+		charset.setAccessible(true);
+		charset.set(null,null);
+		
 		
 		File testDir = new File("src/test/resources");
 		File inventoryFile = new File(testDir, BCUtils.INVENTORY_FILENAME);

@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Filter permettant de remonter les répertoires ou les fichiers
+ * Filter permettant de remonter les rÃ©pertoires ou les fichiers
  * @author vzwingma
  *
  */
