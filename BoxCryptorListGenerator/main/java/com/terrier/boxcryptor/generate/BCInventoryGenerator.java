@@ -1,14 +1,10 @@
 package com.terrier.boxcryptor.generate;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.yaml.snakeyaml.Yaml;
 
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 import com.terrier.boxcryptor.utils.Utils;
@@ -18,7 +14,7 @@ import com.terrier.boxcryptor.utils.Utils;
  * @author vzwingma
  *
  */
-public class BoxCryptorInventoryGenerator {
+public class BCInventoryGenerator {
 
 	// Répertoire chiffré
 	private File repertoireChiffre;
@@ -69,7 +65,7 @@ public class BoxCryptorInventoryGenerator {
 
 
 		// Ecriture de l'inventaire
-		writeInventory(inventaireNew);
+		Utils.dumpYMLInventory(this.repertoireNonChiffre, inventaireNew);
 		Utils.printDelayFromBeginning("Dump Inventory", this.startTraitement);
 	}
 
@@ -83,10 +79,7 @@ public class BoxCryptorInventoryGenerator {
 		BCInventaireRepertoire repertoire;
 		if(inventoryFile.exists()){
 			System.out.println("Enregistrement de la liste dans " + inventoryFile.getCanonicalPath());
-
-			Yaml yml = new Yaml();
-			repertoire = yml.loadAs(new FileInputStream(inventoryFile), BCInventaireRepertoire.class);
-
+			repertoire = Utils.loadYMLInventory(repertoireNonChiffre.getAbsolutePath());
 		}
 		else{
 			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
@@ -97,17 +90,5 @@ public class BoxCryptorInventoryGenerator {
 
 
 
-	/**
-	 * Ecriture de l'inventaire (dump)
-	 * @param inventaireR inventaire
-	 * @throws IOException
-	 */
-	private void writeInventory(final BCInventaireRepertoire inventaireR) throws IOException{
 
-		Yaml yml = new Yaml();
-		FileWriter inventoryWriter = new FileWriter(new File(this.repertoireNonChiffre.getAbsolutePath(), Utils.INVENTORY_FILENAME));
-		yml.dump(inventaireR, inventoryWriter);
-		inventoryWriter.flush();
-		inventoryWriter.close();
-	}
 }

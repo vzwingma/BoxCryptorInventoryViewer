@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import com.terrier.boxcryptor.generate.BoxCryptorInventoryGenerator;
+import com.terrier.boxcryptor.generate.BCInventoryGenerator;
 import com.terrier.boxcryptor.objects.InventoryCommandEnum;
-import com.terrier.boxcryptor.viewer.BoxCryptorInventoryViewer;
+import com.terrier.boxcryptor.viewer.BCInventoryViewer;
 
 /**
  * Manager of BoxCryptor Inventory
@@ -50,7 +50,7 @@ public class BoxCryptorInventoryManager {
 			String cheminChiffre    = getPaths(args != null && args.length > 1 ? args[1] : null, true);	
 			String cheminNonChiffre = getPaths(args != null && args.length > 2 ? args[2] : null, true);
 		
-			BoxCryptorInventoryGenerator bcx = new BoxCryptorInventoryGenerator();
+			BCInventoryGenerator bcx = new BCInventoryGenerator();
 			bcx.startInventory(cheminChiffre, cheminNonChiffre);
 			System.out.println("Fin de la génération de l'inventaire");
 		}
@@ -58,7 +58,7 @@ public class BoxCryptorInventoryManager {
 			
 			String cheminNonChiffre = getPaths(args != null && args.length > 1 ? args[1] : null, true);
 			
-			BoxCryptorInventoryViewer bxcV = new BoxCryptorInventoryViewer();
+			BCInventoryViewer bxcV = new BCInventoryViewer();
 			bxcV.startViewInventory(cheminNonChiffre);
 		}
 		// Résultat commande inconnue
