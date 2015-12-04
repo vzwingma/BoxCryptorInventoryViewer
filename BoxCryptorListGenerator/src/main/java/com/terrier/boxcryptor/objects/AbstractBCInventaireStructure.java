@@ -4,6 +4,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.terrier.boxcryptor.generate.DirectoryInventoryStreamGeneratorCallable;
+
 /**
  * Inventaire
  * @author vzwingma
@@ -11,6 +16,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public abstract class AbstractBCInventaireStructure {
 
+
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBCInventaireStructure.class);
 
 	private String _nomFichierChiffre; 
 	private String _nomFichierClair;
@@ -35,7 +45,7 @@ public abstract class AbstractBCInventaireStructure {
 	
 	/**
 	 * @param fichierClair
-	 * @return cl� pour un r�pertoire
+	 * @return clé pour un répertoire
 	 */
 	public String getCleMap(String nomFichierClair){
 		return getHashMD5(nomFichierClair);
@@ -58,7 +68,7 @@ public abstract class AbstractBCInventaireStructure {
 			return null;
 
 		} catch (final NoSuchAlgorithmException e) {
-			System.err.println("Erreur lors du calcul du hash");
+			LOGGER.error("Erreur lors du calcul du hash");
 			e.printStackTrace();
 			return null;
 		}

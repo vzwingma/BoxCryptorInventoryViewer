@@ -62,7 +62,7 @@ public class BCInventoryGenerator {
 
 		BCUtils.printDelayFromBeginning("Read file Inventory", this.startTraitement);
 
-		// Cr�ation de l'inventaire
+		// Création de l'inventaire
 		ExecutorService threadsPool = Executors.newFixedThreadPool(100);
 		DirectoryInventoryStreamGeneratorCallable inventory = new DirectoryInventoryStreamGeneratorCallable(
 				threadsPool,
@@ -80,7 +80,7 @@ public class BCInventoryGenerator {
 	}
 
 	/**
-	 * Lecture de l'inventaire existant pour mise � jour
+	 * Lecture de l'inventaire existant pour mise à jour
 	 * @throws IOException
 	 */
 	public BCInventaireRepertoire loadFileInventory() throws IOException{

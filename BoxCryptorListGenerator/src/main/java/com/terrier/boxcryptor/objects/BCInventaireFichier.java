@@ -1,7 +1,7 @@
 package com.terrier.boxcryptor.objects;
 
 /**
- * Repr�sente un couple fichier clair/chiffré
+ * Représente un couple fichier clair/chiffré
  * @author vzwingma
  *
  */

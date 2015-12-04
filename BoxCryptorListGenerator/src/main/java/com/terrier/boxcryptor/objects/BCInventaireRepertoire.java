@@ -34,7 +34,7 @@ public class BCInventaireRepertoire extends AbstractBCInventaireStructure {
 	Map<String, BCInventaireFichier> mapInventaireFichiers = new HashMap<String, BCInventaireFichier>();
 	
 	/**
-	 * Sous r�pertoires dans le r�pertoire
+	 * Sous répertoires dans le répertoire
 	 */
 	Map<String, BCInventaireRepertoire> mapInventaireSousRepertoires = new HashMap<String, BCInventaireRepertoire>();
 	

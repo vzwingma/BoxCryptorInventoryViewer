@@ -22,7 +22,6 @@ import com.terrier.boxcryptor.generate.filters.DirectoryFilter;
 import com.terrier.boxcryptor.generate.filters.FileFilter;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
-import com.terrier.boxcryptor.utils.BCUtils;
 
 /**
  * Callable d'un inventaire d'un répertoire
@@ -52,7 +51,7 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 	private String nomTraitementParent;
 
 	/**
-	 * G�n�ration	
+	 * Génération	
 	 * @param parent callable parent
 	 * @param repertoireChiffre 
 	 * @param repertoireNonChiffre

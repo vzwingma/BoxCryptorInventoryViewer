@@ -141,7 +141,7 @@ public class BCInventoryViewer extends Application  {
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
-		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffr�");
+		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
 		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
@@ -157,7 +157,7 @@ public class BCInventoryViewer extends Application  {
 	
 	/**
 	 * Prepare inventory tree items
-	 * @param inventaireRepertoire  inventaireR�pertoire
+	 * @param inventaireRepertoire  inventaireRépertoire
 	 */
 	private TreeItem<AbstractBCInventaireStructure> prepareInventoryTreeItems(BCInventaireRepertoire inventaireRepertoire){
 		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
