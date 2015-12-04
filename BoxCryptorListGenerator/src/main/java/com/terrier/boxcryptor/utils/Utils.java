@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
 /**
@@ -62,4 +63,28 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	
+	
+	/**
+	 * Search method of termes in inventory
+	 * @param inventoryItem inventory item (directory or file)
+	 * @param searchValue search value : 
+	 * 	if null return true
+	 * 	if spaces are present, searchValue is splitted in multiple terms
+	 */
+	public static boolean searchTermsInInventory(AbstractBCInventaireStructure inventoryItem, String searchValue){
+		if(searchValue == null || searchValue.isEmpty()){
+			return true;
+		}
+		else{ 
+			searchValue.split("_")
+					|| treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
+					|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
+					 treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
+						|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
+		}
+	}
+	
+	private String[] multipleSplits(String[])
 }

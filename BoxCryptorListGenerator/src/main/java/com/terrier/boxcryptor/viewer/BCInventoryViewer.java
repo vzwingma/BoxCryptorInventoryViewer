@@ -92,11 +92,10 @@ public class BCInventoryViewer extends Application  {
 		verticalPane.setVgap(5);
 		verticalPane.setHgap(5);
 
-		//Search items
+		//Search field
 		final TextField searchField = new TextField("trone");
 		searchField.setPromptText("Recherche");
 		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
-			System.out.println("Recherche de [" +searchValue+ "] dans l'inventaire");
 			this.showFilteredTreeItems(searchValue);
 		});
 		verticalPane.getChildren().add(searchField);
@@ -122,20 +121,22 @@ public class BCInventoryViewer extends Application  {
 	
 	/**
 	 * Show filtered tree items
-	 * @param searchParams parameters search (if null : full display)
+	 * @param searchValue search (if null : full display)
 	 */
 	@SuppressWarnings("unchecked")
-	public void showFilteredTreeItems(String searchParams){
+	public void showFilteredTreeItems(String searchValue){
+		System.out.println("Recherche de [" +searchValue+ "] dans l'inventaire");
 		
-		
-		 TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchParams);
+		 TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchValue);
 		/**
 		 * Create table
 		 */
 		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
+		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
+		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
 		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
 		// Mise en page du tableau
@@ -190,8 +191,7 @@ public class BCInventoryViewer extends Application  {
 				}
 			}
 			if(newTreeDirectoryItem.getChildren().size() > 0
-					|| treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
-					|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())){			
+					|| Utils.searchTermsInInventory(treeItem.getValue(), searchValue)){			
 				return newTreeDirectoryItem;
 			}
 			else{
@@ -199,9 +199,7 @@ public class BCInventoryViewer extends Application  {
 			}
 		}
 		else{
-			if(searchValue == null 
-					|| treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
-					|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())){
+			if(Utils.searchTermsInInventory(treeItem.getValue(), searchValue)){
 				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
 				newTreeFileItem.setExpanded(true);
 				newTreeFileItem.setValue(treeItem.getValue());
