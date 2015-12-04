@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
-import com.terrier.boxcryptor.utils.Utils;
+import com.terrier.boxcryptor.utils.BCUtils;
 
 /**
  * Main class of BoxCryptor Inventory Generator
@@ -16,9 +16,9 @@ import com.terrier.boxcryptor.utils.Utils;
  */
 public class BCInventoryGenerator {
 
-	// Répertoire chiffré
+	// Rï¿½pertoire chiffrÃ©
 	private File repertoireChiffre;
-	// Répertoire non chiffré
+	// Rï¿½pertoire non chiffrÃ©
 	private File repertoireNonChiffre;
 
 	private Calendar startTraitement = Calendar.getInstance();
@@ -32,7 +32,7 @@ public class BCInventoryGenerator {
 	 * @throws Exception error during generation
 	 */
 	public void startInventory(String cheminRepertoireChiffre, String cheminRepertoireNonChiffre) throws Exception{
-		System.out.println("Début de la génération de l'inventaire");
+		System.out.println("DÃ©but de la gÃ©nÃ©ration de l'inventaire");
 
 		repertoireChiffre = new File(cheminRepertoireChiffre);
 		repertoireNonChiffre = new File(cheminRepertoireNonChiffre);
@@ -50,9 +50,9 @@ public class BCInventoryGenerator {
 		// Lecture de l'inventaire
 		BCInventaireRepertoire inventaire = loadFileInventory();
 
-		Utils.printDelayFromBeginning("Read file Inventory", this.startTraitement);
+		BCUtils.printDelayFromBeginning("Read file Inventory", this.startTraitement);
 
-		// Création de l'inventaire
+		// Crï¿½ation de l'inventaire
 		ExecutorService threadsPool = Executors.newFixedThreadPool(100);
 		DirectoryInventoryStreamGeneratorCallable inventory = new DirectoryInventoryStreamGeneratorCallable(
 				threadsPool,
@@ -61,28 +61,28 @@ public class BCInventoryGenerator {
 				this.repertoireChiffre.getAbsolutePath(), this.repertoireNonChiffre.getAbsolutePath());
 		BCInventaireRepertoire inventaireNew = inventory.call();
 		threadsPool.shutdown();
-		Utils.printDelayFromBeginning("Generate Inventory", this.startTraitement);
+		BCUtils.printDelayFromBeginning("Generate Inventory", this.startTraitement);
 
 
 		// Ecriture de l'inventaire
-		Utils.dumpYMLInventory(this.repertoireNonChiffre, inventaireNew);
-		Utils.printDelayFromBeginning("Dump Inventory", this.startTraitement);
+		BCUtils.dumpYMLInventory(this.repertoireNonChiffre, inventaireNew);
+		BCUtils.printDelayFromBeginning("Dump Inventory", this.startTraitement);
 	}
 
 	/**
-	 * Lecture de l'inventaire existant pour mise à jour
+	 * Lecture de l'inventaire existant pour mise ï¿½ jour
 	 * @throws IOException
 	 */
 	public BCInventaireRepertoire loadFileInventory() throws IOException{
 		// This will output the full path where the file will be written to...
-		File inventoryFile = new File(repertoireNonChiffre, Utils.INVENTORY_FILENAME);
+		File inventoryFile = new File(repertoireNonChiffre, BCUtils.INVENTORY_FILENAME);
 		BCInventaireRepertoire repertoire;
 		if(inventoryFile.exists()){
 			System.out.println("Enregistrement de la liste dans " + inventoryFile.getCanonicalPath());
-			repertoire = Utils.loadYMLInventory(repertoireNonChiffre.getAbsolutePath());
+			repertoire = BCUtils.loadYMLInventory(repertoireNonChiffre.getAbsolutePath());
 		}
 		else{
-			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
+			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Crï¿½ation du fichier");
 			repertoire  = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
 		}
 		return repertoire;

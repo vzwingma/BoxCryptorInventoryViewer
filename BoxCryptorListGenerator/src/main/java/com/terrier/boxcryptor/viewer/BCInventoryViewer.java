@@ -5,7 +5,7 @@ import java.util.List;
 import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
-import com.terrier.boxcryptor.utils.Utils;
+import com.terrier.boxcryptor.utils.BCUtils;
 import com.terrier.boxcryptor.viewer.objects.InventoryCellValueFactory;
 
 import javafx.application.Application;
@@ -59,7 +59,7 @@ public class BCInventoryViewer extends Application  {
 		for (String unnamed : unnamedParameters){
 			repertoireNonChiffre = unnamed;
 		}
-		BCInventaireRepertoire inventory = Utils.loadYMLInventory(repertoireNonChiffre);
+		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(repertoireNonChiffre);
 		this.inventoryItems  = prepareInventoryTreeItems(inventory);
 
 		/**
@@ -135,7 +135,7 @@ public class BCInventoryViewer extends Application  {
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
-		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
+		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffrï¿½");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
 		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
 		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
@@ -158,7 +158,7 @@ public class BCInventoryViewer extends Application  {
 	
 	/**
 	 * Prepare inventory tree items
-	 * @param inventaireRepertoire  inventaireRépertoire
+	 * @param inventaireRepertoire  inventaireRï¿½pertoire
 	 */
 	private TreeItem<AbstractBCInventaireStructure> prepareInventoryTreeItems(BCInventaireRepertoire inventaireRepertoire){
 		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
@@ -191,7 +191,7 @@ public class BCInventoryViewer extends Application  {
 				}
 			}
 			if(newTreeDirectoryItem.getChildren().size() > 0
-					|| Utils.searchTermsInInventory(treeItem.getValue(), searchValue)){			
+					|| BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){			
 				return newTreeDirectoryItem;
 			}
 			else{
@@ -199,7 +199,7 @@ public class BCInventoryViewer extends Application  {
 			}
 		}
 		else{
-			if(Utils.searchTermsInInventory(treeItem.getValue(), searchValue)){
+			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
 				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
 				newTreeFileItem.setExpanded(true);
 				newTreeFileItem.setValue(treeItem.getValue());
