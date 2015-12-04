@@ -78,13 +78,14 @@ public class Utils {
 			return true;
 		}
 		else{ 
-			searchValue.split("_")
-					|| treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
-					|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
-					 treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
-						|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
+//			searchValue.split("_")
+//					|| treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
+//					|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
+//					 treeItem.getValue().get_NomFichierChiffre().toUpperCase().contains(searchValue.toUpperCase()) 
+//						|| treeItem.getValue().get_NomFichierClair().toUpperCase().contains(searchValue.toUpperCase())
+			return true;
 		}
 	}
 	
-	private String[] multipleSplits(String[])
+//	private String[] multipleSplits(String[])
 }
