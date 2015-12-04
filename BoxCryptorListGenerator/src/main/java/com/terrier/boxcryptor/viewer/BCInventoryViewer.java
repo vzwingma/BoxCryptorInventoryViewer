@@ -2,6 +2,10 @@ package com.terrier.boxcryptor.viewer;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.terrier.boxcryptor.BoxCryptorInventoryManager;
 import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
@@ -28,6 +32,13 @@ import javafx.stage.Stage;
  */
 public class BCInventoryViewer extends Application  {
 
+
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryViewer.class);
+	
+	
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -68,11 +79,6 @@ public class BCInventoryViewer extends Application  {
 		showGUI(primaryStage, inventory.get_NomFichierClair());
 	}
 
-	
-	
-
-
-	
 	
 	
 	
@@ -125,7 +131,7 @@ public class BCInventoryViewer extends Application  {
 	 */
 	@SuppressWarnings("unchecked")
 	public void showFilteredTreeItems(String searchValue){
-		System.out.println("Recherche de [" +searchValue+ "] dans l'inventaire");
+		LOGGER.debug("Recherche de [{}] dans l'inventaire", searchValue);
 		
 		 TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchValue);
 		/**
@@ -148,13 +154,6 @@ public class BCInventoryViewer extends Application  {
 	}
 	
 
-	/**
-	 * @return the verticalPane
-	 */
-	public FlowPane getVerticalPane() {
-		return verticalPane;
-	}
-	
 	
 	/**
 	 * Prepare inventory tree items

@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.generate.BCInventoryGenerator;
 import com.terrier.boxcryptor.objects.InventoryCommandEnum;
 import com.terrier.boxcryptor.viewer.BCInventoryViewer;
@@ -19,7 +22,11 @@ import com.terrier.boxcryptor.viewer.BCInventoryViewer;
  */
 public class BoxCryptorInventoryManager {
 
-	
+
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BoxCryptorInventoryManager.class);
 
 	/**
 	 * Classe main
@@ -53,7 +60,7 @@ public class BoxCryptorInventoryManager {
 		
 			BCInventoryGenerator bcx = new BCInventoryGenerator();
 			bcx.startInventory(cheminChiffre, cheminNonChiffre);
-			System.out.println("Fin de la génération de l'inventaire");
+			LOGGER.info("Fin de la génération de l'inventaire");
 		}
 		else if(InventoryCommandEnum.VIEW.equals(commande)){
 			
@@ -64,9 +71,9 @@ public class BoxCryptorInventoryManager {
 		}
 		// Résultat commande inconnue
 		else{
-			System.out.println("**** USAGE ****");
-			System.out.println(" -- generate [Répertoire chiffré (D:)] [Répertoire non chiffré (X:)]");
-			System.out.println(" -- view [Répertoire non chiffré (D:)]");
+			LOGGER.info("**** USAGE ****");
+			LOGGER.info(" -- generate [Répertoire chiffré (D:)] [Répertoire non chiffré (X:)]");
+			LOGGER.info(" -- view [Répertoire non chiffré (D:)]");
 		}
 	}
 
@@ -85,15 +92,15 @@ public class BoxCryptorInventoryManager {
 		}
 		else{
 			if(unCryptedDir){
-				System.out.println("Entrez le répertoire NON CHIFFRE (X:)");
+				LOGGER.info("Entrez le répertoire NON CHIFFRE (X:)");
 			}
 			else{
-				System.out.println("Entrez le répertoire CHIFFRE (D:)");
+				LOGGER.info("Entrez le répertoire CHIFFRE (D:)");
 			}
 			cheminRepertoireDonnees = new String(entree.nextLine().getBytes(), Charset.forName("UTF-8"));
 		}
 		File repertoireDonnees = new File(cheminRepertoireDonnees);
-		System.out.println("> Le répertoire (" + repertoireDonnees.isDirectory() + ") " + repertoireDonnees.getName() + " existe : " + repertoireDonnees.exists());
+		LOGGER.info("> Le répertoire (" + repertoireDonnees.isDirectory() + ") " + repertoireDonnees.getName() + " existe : " + repertoireDonnees.exists());
 
 		entree.close();
 		if(repertoireDonnees.exists()  && repertoireDonnees.isDirectory()){

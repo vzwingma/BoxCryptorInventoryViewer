@@ -6,8 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import com.terrier.boxcryptor.BoxCryptorInventoryManager;
 import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 
@@ -18,10 +21,16 @@ import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
  */
 public class BCUtils {
 	
-	
 
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BCUtils.class);
+
+	// Inventory filename
 	public static final String INVENTORY_FILENAME = "liste_Fichiers_BoxCryptor.yml";
 	
+	// Regex to split search values
 	protected static final String SPLIT_REGEX = "[ _-]";
 	
 	/**
@@ -30,7 +39,7 @@ public class BCUtils {
 	 * @param startTraitementCal start time of Treatment
 	 */
 	public static void printDelayFromBeginning(String treatementName, Calendar startTraitementCal){
-		System.out.println("["+treatementName+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitementCal.getTimeInMillis())  + " ms");
+		LOGGER.info("[{}] > {} ms", treatementName, (Calendar.getInstance().getTimeInMillis() - startTraitementCal.getTimeInMillis()));
 	}
 	
 	
@@ -62,7 +71,7 @@ public class BCUtils {
 			// This will output the full path where the file will be written to...
 			File inventoryFile = new File(repertoire, BCUtils.INVENTORY_FILENAME);
 			if(inventoryFile.exists()){
-				System.out.println("Chargement de l'inventaire depuis " + inventoryFile.getCanonicalPath());
+				LOGGER.info("Chargement de l'inventaire depuis {}", inventoryFile.getCanonicalPath());
 				Yaml yml = new Yaml();
 				return yml.loadAs(new FileInputStream(inventoryFile), BCInventaireRepertoire.class);
 			}

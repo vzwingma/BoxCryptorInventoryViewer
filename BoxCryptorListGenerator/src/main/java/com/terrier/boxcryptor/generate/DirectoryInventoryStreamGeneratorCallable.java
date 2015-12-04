@@ -15,10 +15,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.generate.filters.DirectoryFilter;
 import com.terrier.boxcryptor.generate.filters.FileFilter;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
+import com.terrier.boxcryptor.utils.BCUtils;
 
 /**
  * Callable d'un inventaire d'un répertoire
@@ -28,6 +32,11 @@ import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInventaireRepertoire> {
 
 
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryInventoryStreamGeneratorCallable.class);
+	
 	// Inventaire du répertoire
 	private BCInventaireRepertoire inventaireR;
 	// Répertoire chiffré
@@ -125,7 +134,7 @@ public class DirectoryInventoryStreamGeneratorCallable implements Callable<BCInv
 	 * Print du temps de traitement
 	 */
 	private void printDelayTraitementFromBeginning(){
-		System.out.println("THREAD ["+this.nomTraitementParent+"] > " + (Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis())  + " ms");
+		LOGGER.info("THREAD [{}] > {} ms", this.nomTraitementParent, Calendar.getInstance().getTimeInMillis() - startTraitement.getTimeInMillis());
 	}
 
 }

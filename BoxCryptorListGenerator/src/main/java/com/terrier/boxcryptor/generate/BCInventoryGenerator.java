@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 import com.terrier.boxcryptor.utils.BCUtils;
 
@@ -16,9 +19,17 @@ import com.terrier.boxcryptor.utils.BCUtils;
  */
 public class BCInventoryGenerator {
 
-	// R�pertoire chiffré
+
+
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BCUtils.class);
+
+	
+	// Répertoire chiffré
 	private File repertoireChiffre;
-	// R�pertoire non chiffré
+	// Répertoire non chiffré
 	private File repertoireNonChiffre;
 
 	private Calendar startTraitement = Calendar.getInstance();
@@ -32,8 +43,7 @@ public class BCInventoryGenerator {
 	 * @throws Exception error during generation
 	 */
 	public void startInventory(String cheminRepertoireChiffre, String cheminRepertoireNonChiffre) throws Exception{
-		System.out.println("Début de la génération de l'inventaire");
-
+		LOGGER.info("Début de la génération de l'inventaire");
 		repertoireChiffre = new File(cheminRepertoireChiffre);
 		repertoireNonChiffre = new File(cheminRepertoireNonChiffre);
 		generateInventory();
@@ -78,17 +88,13 @@ public class BCInventoryGenerator {
 		File inventoryFile = new File(repertoireNonChiffre, BCUtils.INVENTORY_FILENAME);
 		BCInventaireRepertoire repertoire;
 		if(inventoryFile.exists()){
-			System.out.println("Enregistrement de la liste dans " + inventoryFile.getCanonicalPath());
+			LOGGER.info("Enregistrement de la liste dans {}", inventoryFile.getCanonicalPath());
 			repertoire = BCUtils.loadYMLInventory(repertoireNonChiffre.getAbsolutePath());
 		}
 		else{
-			System.out.println("Le fichier "+ inventoryFile.getAbsolutePath()+ " n'existe pas. Création du fichier");
+			LOGGER.warn("Le fichier {} n'existe pas. Création du fichier", inventoryFile.getAbsolutePath());
 			repertoire  = new BCInventaireRepertoire(repertoireChiffre.getName(), repertoireNonChiffre.getName());
 		}
 		return repertoire;
 	}
-
-
-
-
 }
