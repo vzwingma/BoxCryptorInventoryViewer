@@ -7,8 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.generate.DirectoryInventoryStreamGeneratorCallable;
-
 /**
  * Inventaire
  * @author vzwingma

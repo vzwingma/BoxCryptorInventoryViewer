@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.BoxCryptorInventoryManager;
 import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
@@ -99,7 +98,7 @@ public class BCInventoryViewer extends Application  {
 		verticalPane.setHgap(5);
 
 		//Search field
-		final TextField searchField = new TextField("trone");
+		final TextField searchField = new TextField();
 		searchField.setPromptText("Recherche");
 		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
 			this.showFilteredTreeItems(searchValue);
