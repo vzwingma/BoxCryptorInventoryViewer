@@ -1,4 +1,5 @@
-# Travis Lint : https://lint.travis-ci.org/
+# Travis Lint : https://lint.travis-ci.org
+# Config secure
 language: java
 jdk:
   - oraclejdk8
