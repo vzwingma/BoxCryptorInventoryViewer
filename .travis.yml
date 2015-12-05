@@ -5,15 +5,15 @@ jdk:
 env:
   global:
   - "ARTIFACTS_AWS_REGION=eu-west-1"
-  - "ARTIFACTS_S3_BUCKET=gestion-budget"
+  - "ARTIFACTS_S3_BUCKET=utilitaires"
   - secure: aGmdT56oOn52kmdgkEK+FTgPAWwiuomRzQ60GTab0lOBvilRDjv/B+vr8kyMA7gta51zswvmRzbGcOlymKgGdLML4shGOColrVoLISiFKLqQEOZDUfhB1LPHOoNqmJdPyTNcIeyYvC2lKQ8u6BV+AtWzUNr4/iYL7FnD4gjSpyMsyQZFj7o5YDYtxZPqzp43FW7WuVEp5NRGUKo8ugl5kANa/ITl8nCbRvTunbxtKunGb05ghj6LoMk6eS4hJl/BsmD1grGcJ99QqFoq69nx+O7jt1RKVEkBD8bZo1+QfW40VeRcfGJsb23Yb/j7h3AUeEOT+lrZP7quAM618pkddCYJmG2mG1UqKDJJ6x9n74J0faOitCsvE6+AMU7VVpf/+GrIeberrAbOixYdMfDWUbUVlINJ01ism4A9EpIoxnN8swpi14K58nfuxhlqB1EWECWXb4/SFTI7cGg6mOsnJrIiGHkAVrIiEuNxELYCWnVWeh5pmw+g+2DBNwDFX8kswJmesIsREKEilmhe/Pj2hMq+ZHru+k1Tkuu2GespXFdRtb50RA+nBbKDPoBTGOyM3d8zJjNOm9zMgcPT5tJ4RKC+XoWAbjdkNtN0u+Q96C3EKQEg07Iwv3YULTw3plDKKbIytTS0WuQa5NnfSVz65gfjF4APq42Y7ckHkwtJkNY=
   - secure: VGenXEkuJJQth5WjUpLxXHqDZu6e8Qg2edsNIgKvohkGRbmUufrUeetfFBiagMen9VaMvDOculOOqvy/qi5/SLVmxeCRRg5UsCkgDidXbQJav73hGII10p5nak9zif8AQEAw3/F7irBCh/bzYt5Lusse/npkqr+0xQlM7EkP+X1MDlO4ipwwflHHdcE3Ngomdq+qGDr+/MUkutckmE6VCLx+WJDDNZasliCBm7hMOTpqD3nE/b/6yi3+Pt/rFjUZPV9AUZkygacL7iPdZM9evYeru1Y/f+/1Sptunov0JlJQR+GnKHKpVBBEK4s4wuL1A3h56GHDe/KPA0ucWFVNbg/iK1/TluWGpw9s9LiJGqsMUoEEUJ+beTy+PYjA/CQNnXlMzNTm/LS/9oJdOy0g2cNewUtNe7pWnIk0Y6AnpO0Fm/sk5yo/+J/jl7WsZInY/QsKtikVmkRsGv7uQDvLXXS/MlpxuOmJxbVZ3nupqnyLUF+l3aPXumauCuOgnmdouKsyDQdbOCvC1v6FlE+YVyHkCHb3tnJPYMomHuaFvxWchLRegMZ527TR0B/cQkQeuN0zb1638V7VZ0H9slOCpZYSVmy201+VKgE2MWG5h61CIKMcXhiB4VFBSeBGfOYW5NR5a0pjrBbIPAr+R8SAgsjbqSnGV77gmVb7vc/rJu0=
 before_install:
+  - rvm reinstall ruby-head --binary
   - cd BoxCryptorListGenerator
-#  - rvm reinstall ruby-head --binary
-install: 
+  install: 
   - gradle build
-# before_script:
-#  - "gem install travis-artifacts"
-#after_script:
-#  - "travis-artifacts upload --path target/*.tar.gz --target-path artifacts/$TRAVIS_BUILD_NUMBER"
+ before_script:
+  - "gem install travis-artifacts"
+after_script:
+  - "travis-artifacts upload --path target/*.jar --target-path artifacts/$TRAVIS_BUILD_NUMBER"
