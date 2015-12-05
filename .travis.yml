@@ -1,4 +1,5 @@
 # Travis Lint : https://lint.travis-ci.org/
+# Build and deploy to S3
 language: java
 jdk:
   - oraclejdk8
