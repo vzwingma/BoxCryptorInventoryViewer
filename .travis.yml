@@ -1,5 +1,4 @@
 # Travis Lint : https://lint.travis-ci.org/
-# Build and deploy to S3
 language: java
 jdk:
   - oraclejdk8
@@ -12,9 +11,9 @@ env:
 before_install:
   - rvm reinstall ruby-head --binary
   - cd BoxCryptorListGenerator
-  install: 
+install: 
   - gradle build
- before_script:
+before_script:
   - "gem install travis-artifacts"
 after_script:
   - "travis-artifacts upload --path target/*.jar --target-path artifacts/$TRAVIS_BUILD_NUMBER"
