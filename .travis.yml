@@ -15,10 +15,10 @@ before_install:
   - rvm reinstall ruby-head --binary
   - cd BoxCryptorListGenerator
 install: 
-  - gradle build
+  - gradle distZip
 before_script:
   - "gem install travis-artifacts"
 after_script:
-  - cd target
-  - "travis-artifacts upload --path *.jar --target-path artifacts/$TRAVIS_BUILD_NUMBER"
-  - "travis-artifacts upload --path *.jar --target-path artifacts/latest"
+  - cd build/distributions
+  - "travis-artifacts upload --path BoxCryptorListGenerator.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER"
+  - "travis-artifacts upload --path BoxCryptorListGenerator.zip --target-path artifacts/latest"
