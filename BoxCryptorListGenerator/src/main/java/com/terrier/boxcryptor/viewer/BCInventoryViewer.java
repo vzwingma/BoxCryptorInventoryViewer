@@ -158,14 +158,14 @@ public class BCInventoryViewer extends Application  {
 	 * Prepare inventory tree items
 	 * @param inventaireRepertoire  inventaireRépertoire
 	 */
-	private TreeItem<AbstractBCInventaireStructure> prepareInventoryTreeItems(BCInventaireRepertoire inventaireRepertoire){
+	private TreeItem<AbstractBCInventaireStructure> prepareInventoryTreeItems(final BCInventaireRepertoire inventaireRepertoire){
 		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
 		repertoireItem.setExpanded(true);
-		for (BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
+		for (final BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
 			repertoireItem.getChildren().add(
 					new TreeItem<AbstractBCInventaireStructure>(inventaireFichier));
 		}
-		for (BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
+		for (final BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
 			repertoireItem.getChildren().add(prepareInventoryTreeItems(inventaireSsRepertoire));
 		}
 		return repertoireItem;
