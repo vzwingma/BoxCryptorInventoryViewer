@@ -8,8 +8,6 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.generate.BCInventoryGenerator;
-import com.terrier.boxcryptor.objects.InventoryCommandEnum;
 import com.terrier.boxcryptor.viewer.BCInventoryViewer;
 
 /**
@@ -41,43 +39,13 @@ public class BoxCryptorInventoryManager {
 		charset.setAccessible(true);
 		charset.set(null,null);
 
-		InventoryCommandEnum commande = null;
-		if(args.length >= 1){
-			String cmd = args[0];
-			if(cmd.equalsIgnoreCase("--generate")){
-				commande = InventoryCommandEnum.GENERATE;
-			}
-			else if(cmd.equalsIgnoreCase("--view")){
-				commande = InventoryCommandEnum.VIEW;
-			}
-		}
+		String cheminNonChiffre = getPaths(args != null && args.length > 0 ? args[0] : null, true);
 
-
-		if(InventoryCommandEnum.GENERATE.equals(commande)){
-			
-			String cheminChiffre    = getPaths(args != null && args.length > 1 ? args[1] : null, true);	
-			String cheminNonChiffre = getPaths(args != null && args.length > 2 ? args[2] : null, true);
-		
-			BCInventoryGenerator bcx = new BCInventoryGenerator();
-			bcx.startInventory(cheminChiffre, cheminNonChiffre);
-			LOGGER.info("Fin de la génération de l'inventaire");
-		}
-		else if(InventoryCommandEnum.VIEW.equals(commande)){
-			
-			String cheminNonChiffre = getPaths(args != null && args.length > 1 ? args[1] : null, true);
-			
-			BCInventoryViewer bxcV = new BCInventoryViewer();
-			bxcV.startViewInventory(cheminNonChiffre);
-		}
-		// Résultat commande inconnue
-		else{
-			LOGGER.info("**** USAGE ****");
-			LOGGER.info(" -- generate [Répertoire chiffré (D:)] [Répertoire non chiffré (X:)]");
-			LOGGER.info(" -- view [Répertoire non chiffré (D:)]");
-		}
+		BCInventoryViewer bxcV = new BCInventoryViewer();
+		bxcV.startViewInventory(cheminNonChiffre);
 	}
 
-	
+
 	/**
 	 * Insertion du chemin au répertoire
 	 * @param arg arguments en entrée du main
