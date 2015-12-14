@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.Calendar;
 
 import org.junit.Test;
 
@@ -62,6 +63,7 @@ public class TestBCUtils {
 		// Dump
 		BCInventaireRepertoire testInventory = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "nom en clair");
 		testInventory.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "nom en clair"));
+		testInventory.setDateModificationDernierInventaire(Calendar.getInstance().getTimeInMillis());
 		BCUtils.dumpYMLInventory(new File("src/test/resources"), testInventory);
 		
 		assertTrue(inventoryFile.exists());
@@ -69,6 +71,7 @@ public class TestBCUtils {
 		// Load
 		BCInventaireRepertoire loadedInventory = BCUtils.loadYMLInventory(testDir.getPath());
 		assertNotNull(loadedInventory);
+		
 		assertEquals(testInventory.get_NomFichierChiffre(), loadedInventory.get_NomFichierChiffre());
 		assertEquals(testInventory.get_NomFichierClair(), loadedInventory.get_NomFichierClair());
 		assertEquals(testInventory.getMapInventaireFichiers().values().iterator().next().get_NomFichierChiffre(), loadedInventory.getMapInventaireFichiers().values().iterator().next().get_NomFichierChiffre());
