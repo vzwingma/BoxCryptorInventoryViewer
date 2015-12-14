@@ -1,4 +1,4 @@
-package com.terrier.boxcryptor.objects;
+package com.terrier.utilities.automation.bundles.boxcryptor.objects;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

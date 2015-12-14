@@ -5,11 +5,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.objects.AbstractBCInventaireStructure;
-import com.terrier.boxcryptor.objects.BCInventaireFichier;
-import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
 import com.terrier.boxcryptor.utils.BCUtils;
 import com.terrier.boxcryptor.viewer.objects.InventoryCellValueFactory;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;

@@ -15,8 +15,8 @@ import java.nio.charset.Charset;
 
 import org.junit.Test;
 
-import com.terrier.boxcryptor.objects.BCInventaireFichier;
-import com.terrier.boxcryptor.objects.BCInventaireRepertoire;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
 /**
  * Test class for utils methods
