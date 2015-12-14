@@ -6,7 +6,7 @@ jdk:
 before_install:
   - cd BoxCryptorInventoryViewer  
 install: 
-  - gradle build
+  - gradle distZip
 deploy:
   provider: releases
   api_key:
