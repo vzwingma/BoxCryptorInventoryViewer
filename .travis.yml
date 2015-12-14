@@ -3,13 +3,15 @@
 language: java
 jdk:
   - oraclejdk8
+before_install:
+  - cd BoxCryptorInventoryViewer  
 install: 
-  - gradle distZip
+  - gradle build
 deploy:
   provider: releases
   api_key:
     secure: AnE5pum8lCyymw8F+S64vTOBk/238dZk503YwO0ecTPzhnscqnYfm/eqdF0wGiReptSFVLJ3FBeCpzWWmV5+yPo9D3ZO/8nFOyxmrvwwm+tb8AcjFFf1oMdmZ5IqFDifHiR2X27raDmNmlSqSBsI7E53FoQRVVseshOzP8NjJGqq1fvNJ4OKZ28YlTg8jMtFQSfBnVi0uhvK7nw1VjOaG9tMCUvGNodCiTaWuw5LP2noaV26Ewwbn3FastEUMUHij5p8gXkTDjk+xq/LSZA3+IqZe19Sxy4hWyUyO3hmPPsy4YSaxuuX2x+8Fa1+wi6YOWQklLCtFTLXeWQnwhqz2ZwanRE6e6nguqd16jd2el3TH4N/ND+C3sYqIzX1kt3VZL/17oCnvRL3j7ToJrb2unBeCM2E1j/BlpR/X5KhX9+jZV4LAj2ZF0w4KrcC0K4ds0hPWaV9YGAVWT9u5TaDcwNHXdehQ8M0uTMb/gMHogLx/UNNbd80ShhFTqbhRBd6eFWgxSmq6YiDUeRg/U2N9ooVLsmPE/EkPzr+13d03hXMlHxOku+dQy9cqtAj+7ziwYnUWL0C2TFJP/CWB5KSk/tSBfQR+w3/IQu5Do21VQOerzRX2BkhBHUwHV+wvp2B5bqnuqAJ5JIyaE4+NESrFvVe+TlGoo5qF3SHGkDENIc=
-  file: build/distributions/BoxCryptorListGenerator.zip
+  file: build/distributions/BoxCryptorInventoryViewer.zip
   skip_cleanup: true  
   on:
     repo: vzwingma/utilitaires
