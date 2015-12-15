@@ -8,7 +8,6 @@ before_install:
 install: 
   - gradle distZip
 before_deploy:
-  - cd BoxCryptorInventoryViewer
   - ls -lh
   - cd build/distributions
   - ls -lh
