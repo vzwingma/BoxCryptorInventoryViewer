@@ -7,10 +7,8 @@ before_install:
   - cd BoxCryptorInventoryViewer  
 install: 
   - gradle distZip
-after_success:
-  - ls -lh
+before_deploy:
   - cd build/distributions
-  - ls -lh
 deploy:
   provider: releases
   api_key:
