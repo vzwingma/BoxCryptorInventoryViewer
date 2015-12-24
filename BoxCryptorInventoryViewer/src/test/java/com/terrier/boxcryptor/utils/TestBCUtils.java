@@ -79,6 +79,9 @@ public class TestBCUtils {
 	}
 	
 	
+	/**
+	 * Test d'inventaire
+	 */
 	@Test
 	public void testSearchTermsInInventoryDir(){
 		BCInventaireRepertoire testInventory = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "nom en clair_et_attaché");
