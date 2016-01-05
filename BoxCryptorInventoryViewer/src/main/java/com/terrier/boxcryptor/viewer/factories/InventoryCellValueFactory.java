@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.boxcryptor.viewer.objects;
+package com.terrier.boxcryptor.viewer.factories;
 
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 

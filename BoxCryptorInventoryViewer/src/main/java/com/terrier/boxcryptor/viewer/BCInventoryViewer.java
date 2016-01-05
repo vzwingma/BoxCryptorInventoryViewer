@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.boxcryptor.utils.BCUtils;
-import com.terrier.boxcryptor.viewer.objects.InventoryCellValueFactory;
+import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
+import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
@@ -139,10 +140,16 @@ public class BCInventoryViewer extends Application  {
 		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
+		// Affichage
 		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
+		// Menu
+		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
+		// Affichage
 		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
+		// Menu
+		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
 		// Mise en page du tableau
 		treeTableView.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
