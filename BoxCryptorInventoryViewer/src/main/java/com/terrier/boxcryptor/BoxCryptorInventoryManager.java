@@ -68,7 +68,7 @@ public class BoxCryptorInventoryManager {
 			cheminRepertoireDonnees = new String(entree.nextLine().getBytes(), Charset.forName("UTF-8"));
 		}
 		File repertoireDonnees = new File(cheminRepertoireDonnees);
-		LOGGER.info("> Le répertoire (" + repertoireDonnees.isDirectory() + ") " + repertoireDonnees.getName() + " existe : " + repertoireDonnees.exists());
+		LOGGER.info("> Le répertoire ({}) {} existe : {}", repertoireDonnees.isDirectory(), repertoireDonnees.getName(), repertoireDonnees.exists());
 
 		entree.close();
 		if(repertoireDonnees.exists()  && repertoireDonnees.isDirectory()){
