@@ -1,5 +1,6 @@
 package com.terrier.boxcryptor.viewer;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -175,6 +176,20 @@ public class BCInventoryViewer extends Application  {
 		for (final BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
 			repertoireItem.getChildren().add(prepareInventoryTreeItems(inventaireSsRepertoire));
 		}
+		
+		// Sort
+		repertoireItem.getChildren().sort(new Comparator<TreeItem<AbstractBCInventaireStructure>>() {
+
+			/* (non-Javadoc)
+			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+			 */
+			@Override
+			public int compare(TreeItem<AbstractBCInventaireStructure> o1, TreeItem<AbstractBCInventaireStructure> o2) {
+				// TODO Auto-generated method stub
+				return o1.getValue().get_NomFichierClair().compareToIgnoreCase(o2.getValue().get_NomFichierClair());
+			}
+		});
+		
 		return repertoireItem;
 	}
 	
