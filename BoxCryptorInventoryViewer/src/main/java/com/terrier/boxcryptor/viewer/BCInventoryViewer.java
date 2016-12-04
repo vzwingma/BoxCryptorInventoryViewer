@@ -17,6 +17,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -38,8 +39,8 @@ public class BCInventoryViewer extends Application  {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryViewer.class);
-	
-	
+
+
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -55,7 +56,9 @@ public class BCInventoryViewer extends Application  {
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
 	private FlowPane verticalPane;
-	
+
+	private Label resultLabel;
+
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
@@ -80,32 +83,45 @@ public class BCInventoryViewer extends Application  {
 		showGUI(primaryStage, inventory.get_NomFichierClair());
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * 
 	 * @param primaryStage
 	 * @param inventoryItems
 	 */
 	private void showGUI(Stage primaryStage, String inventoryName){
-		
+
 		primaryStage.setTitle("Inventory Viewer [" + inventoryName + "]");        
 		primaryStage.setMaximized(true);
-		
+
 		//Mise en page
 		this.verticalPane = new FlowPane(Orientation.VERTICAL);
 		verticalPane.setPadding(new Insets(10, 10, 10, 10));
 		verticalPane.setVgap(5);
 		verticalPane.setHgap(5);
 
+
+		FlowPane searchPane = new FlowPane(Orientation.HORIZONTAL);
+		//searchPane.setPadding(new Insets(10, 10, 10, 10));
+		searchPane.setHgap(5);
+
+
 		//Search field
 		final TextField searchField = new TextField();
-		searchField.setPromptText("Recherche");
+		searchField.setPromptText("Rechercher un nom en clair ou chiffrer");
+		searchField.setPrefWidth(800);
 		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
 			this.showFilteredTreeItems(searchValue);
 		});
-		verticalPane.getChildren().add(searchField);
+		searchPane.getChildren().add(searchField);
+
+
+		this.resultLabel = new Label();
+		this.resultLabel.setMaxHeight(20);
+		searchPane.getChildren().add(this.resultLabel);
+		verticalPane.getChildren().add(searchPane);
 		/**
 		 * Create table
 		 */
@@ -124,8 +140,8 @@ public class BCInventoryViewer extends Application  {
 
 		primaryStage.show();
 	}
-	
-	
+
+
 	/**
 	 * Show filtered tree items
 	 * @param searchValue search (if null : full display)
@@ -133,8 +149,14 @@ public class BCInventoryViewer extends Application  {
 	@SuppressWarnings("unchecked")
 	public void showFilteredTreeItems(String searchValue){
 		LOGGER.debug("Recherche de [{}] dans l'inventaire", searchValue);
-		
-		 TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchValue);
+
+		TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchValue);
+
+		// nb de résultats
+		int nbResultats = countElements(filteredInventoryItems);
+		LOGGER.debug(" >> [{}] résultats" , nbResultats);
+		this.resultLabel.setText(nbResultats + " résultat(s)");
+
 		/**
 		 * Create table
 		 */
@@ -159,9 +181,26 @@ public class BCInventoryViewer extends Application  {
 		verticalPane.getChildren().remove(1);
 		verticalPane.getChildren().add(treeTableView);
 	}
-	
 
-	
+	/**
+	 * @param tree
+	 * @return le nombre du résultat
+	 */
+	private int countElements(TreeItem<AbstractBCInventaireStructure> tree){
+		int nbElements = 0;
+		if(tree != null){
+			if(tree.getValue() != null && tree.getValue() instanceof BCInventaireFichier){
+				nbElements ++;
+			}
+			if(tree.getChildren() != null){
+				for (TreeItem<AbstractBCInventaireStructure> subStree : tree.getChildren()) {
+					nbElements += countElements(subStree);
+				}
+			}
+		}
+		return nbElements;
+	}
+
 	/**
 	 * Prepare inventory tree items
 	 * @param inventaireRepertoire  inventaireRépertoire
@@ -176,7 +215,7 @@ public class BCInventoryViewer extends Application  {
 		for (final BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
 			repertoireItem.getChildren().add(prepareInventoryTreeItems(inventaireSsRepertoire));
 		}
-		
+
 		// Sort
 		repertoireItem.getChildren().sort(new Comparator<TreeItem<AbstractBCInventaireStructure>>() {
 
@@ -185,14 +224,13 @@ public class BCInventoryViewer extends Application  {
 			 */
 			@Override
 			public int compare(TreeItem<AbstractBCInventaireStructure> o1, TreeItem<AbstractBCInventaireStructure> o2) {
-				// TODO Auto-generated method stub
 				return o1.getValue().get_NomFichierClair().compareToIgnoreCase(o2.getValue().get_NomFichierClair());
 			}
 		});
-		
+
 		return repertoireItem;
 	}
-	
+
 	/**
 	 * @param treeItem
 	 * @param searchValue
@@ -228,6 +266,6 @@ public class BCInventoryViewer extends Application  {
 			return null;
 		}
 	}
-	
-	
+
+
 }
