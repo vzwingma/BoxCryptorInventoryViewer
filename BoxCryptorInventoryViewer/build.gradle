@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
-version = '1.1'
+version = '1.0.1'
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -16,6 +16,7 @@ task fatJar(type: Jar) {
         	'Main-Class': 'com.terrier.boxcryptor.BoxCryptorInventoryManager'
     }
     baseName = project.name + '-all'
+    archiveName = project.name + '.jar'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
