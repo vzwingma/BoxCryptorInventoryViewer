@@ -8,6 +8,17 @@ compileTestJava.options.encoding = 'UTF-8'
 
 mainClassName = "com.terrier.boxcryptor.BoxCryptorInventoryManager"
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar BowCryptor Inventory Viewer',
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.terrier.boxcryptor.BoxCryptorInventoryManager'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 dependencies {
     compile 'org.yaml:snakeyaml:1.17', 'ch.qos.logback:logback-classic:1.1.3', 'org.slf4j:slf4j-log4j12:1.7.21'
