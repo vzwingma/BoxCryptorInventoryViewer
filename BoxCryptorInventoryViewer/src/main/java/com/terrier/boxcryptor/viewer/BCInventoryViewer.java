@@ -111,7 +111,7 @@ public class BCInventoryViewer extends Application  {
 		//Search field
 		final TextField searchField = new TextField();
 		searchField.setPromptText("Rechercher un nom en clair ou chiffrer");
-		searchField.setPrefWidth(800);
+		searchField.setPrefWidth(1800);
 		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
 			this.showFilteredTreeItems(searchValue);
 		});
@@ -239,21 +239,32 @@ public class BCInventoryViewer extends Application  {
 
 		// Add directory
 		if(treeItem.getValue() instanceof BCInventaireRepertoire){
+
 			TreeItem<AbstractBCInventaireStructure> newTreeDirectoryItem = new TreeItem<AbstractBCInventaireStructure>();
 			newTreeDirectoryItem.setExpanded(true);
 			newTreeDirectoryItem.setValue(treeItem.getValue());
+			// si c'est le  repertoire qui correspond
+			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
+				for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
+						newTreeDirectoryItem.getChildren().add(subtreeItem);
+				}
+				return newTreeDirectoryItem;
+			}
+			// recherche des sous repertoires
+			else{
 			for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
 				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = searchInTreeItem(subtreeItem, searchValue);
 				if(newTreeFileItem != null){
 					newTreeDirectoryItem.getChildren().add(newTreeFileItem);
 				}
 			}
-			if(newTreeDirectoryItem.getChildren().size() > 0
-					|| BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){			
+			if(newTreeDirectoryItem.getChildren().size() > 0){			
 				return newTreeDirectoryItem;
 			}
+			
 			else{
 				return null;
+			}
 			}
 		}
 		else{
