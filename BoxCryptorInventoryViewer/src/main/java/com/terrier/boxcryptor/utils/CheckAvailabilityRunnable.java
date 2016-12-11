@@ -5,8 +5,8 @@ package com.terrier.boxcryptor.utils;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.concurrent.Callable;
+import java.nio.file.LinkOption;
+import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireR
  * @author vzwingma
  *
  */
-public class CheckAvailabilityCallable implements Callable<BCInventaireRepertoire> {
+public class CheckAvailabilityRunnable implements Runnable {
 
 
 	/**
@@ -32,13 +32,15 @@ public class CheckAvailabilityCallable implements Callable<BCInventaireRepertoir
 	
 	private String repertoireNonChiffre;
 
+	private ExecutorService threadsAvailability;
 	/**
 	 * @param inventoryItems
 	 */
-	public CheckAvailabilityCallable(BCInventaireRepertoire inventoryItems, String repertoireNonChiffre) {
+	public CheckAvailabilityRunnable(BCInventaireRepertoire inventoryItems, String repertoireNonChiffre, ExecutorService threadsAvailability) {
 		super();
 		this.inventoryItems = inventoryItems;
 		this.repertoireNonChiffre = repertoireNonChiffre;
+		this.threadsAvailability = threadsAvailability;
 	}
 
 
@@ -48,9 +50,10 @@ public class CheckAvailabilityCallable implements Callable<BCInventaireRepertoir
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public BCInventaireRepertoire call() throws Exception {
+	public void run() {
 		updateAvailability(this.inventoryItems, repertoireNonChiffre);
-		return this.inventoryItems;
+		LOGGER.debug("Check de la disponbilité de {}", this.inventoryItems.get_NomFichierClair());
+		AvailabilityNotifier.notifyAvailabilityUpdate();
 	}
 
 
@@ -68,7 +71,7 @@ public class CheckAvailabilityCallable implements Callable<BCInventaireRepertoir
 		}
 		
 		for (BCInventaireRepertoire ssRepertoire : repertoire.getMapInventaireSousRepertoires().values()) {
-			updateAvailability(ssRepertoire, rootRepertoire + "/" + repertoire.get_NomFichierClair());	
+			this.threadsAvailability.submit(new CheckAvailabilityRunnable(ssRepertoire, rootRepertoire + "/" + repertoire.get_NomFichierClair(), this.threadsAvailability));	
 		}
 	}
 	
@@ -79,9 +82,7 @@ public class CheckAvailabilityCallable implements Callable<BCInventaireRepertoir
 	 * @return si le fichier existe
 	 */
 	private boolean isFileAvailable(String path, String fileName){
-		Path fichier = FileSystems.getDefault().getPath(path, fileName);
-		boolean available = Files.exists(fichier);
-		LOGGER.debug("Check local availability de {} : {}", fichier, available);
-		return available;
+		//LOGGER.debug("Check local availability de {} : {}", fichier, available);
+		return Files.exists(FileSystems.getDefault().getPath(path, fileName), LinkOption.NOFOLLOW_LINKS);
 	}
 }

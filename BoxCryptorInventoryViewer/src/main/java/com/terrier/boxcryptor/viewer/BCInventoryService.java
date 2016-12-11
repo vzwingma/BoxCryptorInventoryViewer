@@ -5,10 +5,11 @@ package com.terrier.boxcryptor.viewer;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.terrier.boxcryptor.utils.BCUtils;
-import com.terrier.boxcryptor.utils.CheckAvailabilityCallable;
+import com.terrier.boxcryptor.utils.CheckAvailabilityRunnable;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
@@ -24,6 +25,8 @@ public class BCInventoryService {
 
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
+	private ExecutorService threadsAvailability = Executors.newFixedThreadPool(1000);
+	
 	/**
 	 * 
 	 * @param repertoireNonChiffre
@@ -33,7 +36,7 @@ public class BCInventoryService {
 	public void chargeInventaire(String repertoireNonChiffre) throws IOException{
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(repertoireNonChiffre);
 		this.inventoryItems  = getFullInventoryTreeItems(inventory);
-		Executors.newSingleThreadExecutor().submit(new CheckAvailabilityCallable(inventory, "X:"));
+		threadsAvailability.execute(new CheckAvailabilityRunnable(inventory, "X:", threadsAvailability));
 	}
 
 

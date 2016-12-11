@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.concurrent.Executors;
 
 import org.junit.Test;
 
@@ -38,9 +39,8 @@ public class TestCheckAvailabilityCallable {
 		// Load
 		BCInventaireRepertoire loadedInventory = BCUtils.loadYMLInventory(testDir.getPath());
 		assertNotNull(loadedInventory);
-		
-		CheckAvailabilityCallable callable = new CheckAvailabilityCallable(loadedInventory, testDir.getAbsolutePath());
-		callable.call();
+		CheckAvailabilityRunnable callable = new CheckAvailabilityRunnable(loadedInventory, testDir.getAbsolutePath(), Executors.newFixedThreadPool(10));
+		callable.run();
 		
 	}
 	

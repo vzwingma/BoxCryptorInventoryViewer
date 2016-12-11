@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.boxcryptor.utils.AvailabilityListener;
+import com.terrier.boxcryptor.utils.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellValueFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellEnum;
@@ -32,7 +34,7 @@ import javafx.stage.Stage;
  * @author vzwingma
  *
  */
-public class BCInventoryViewer extends Application  {
+public class BCInventoryViewer extends Application implements AvailabilityListener {
 
 
 	/**
@@ -42,6 +44,8 @@ public class BCInventoryViewer extends Application  {
 
 
 	private final BCInventoryService service = new BCInventoryService();
+	
+
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -54,7 +58,7 @@ public class BCInventoryViewer extends Application  {
 	/**
 	 * Full tree items
 	 */
-
+	private TreeTableView<AbstractBCInventaireStructure> treeTableView;
 	private FlowPane verticalPane;
 
 	private Label resultLabel;
@@ -65,6 +69,7 @@ public class BCInventoryViewer extends Application  {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		AvailabilityNotifier.register(this);
 		/**
 		 * Prepare inventory items
 		 */
@@ -125,6 +130,7 @@ public class BCInventoryViewer extends Application  {
 		 * Create table
 		 */
 		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>();
+
 		verticalPane.getChildren().add(treeTableView);
 		/**
 		 * Search tree items
@@ -159,7 +165,7 @@ public class BCInventoryViewer extends Application  {
 		/**
 		 * Table de résultats
 		 */
-		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
+		this.treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
 		
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
@@ -216,4 +222,13 @@ public class BCInventoryViewer extends Application  {
 
 
 
+	/* (non-Javadoc)
+	 * @see com.terrier.boxcryptor.utils.AvailabilityListener#availabilityUpdated()
+	 */
+	@Override
+	public void itemAvailabilityUpdated() {
+		if(this.treeTableView != null){
+			this.treeTableView.refresh();
+		}
+	}
 }
