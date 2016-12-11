@@ -37,9 +37,6 @@ public class InventoryAvailableCellValueFactory implements Callback<TreeTableCol
 	public ObservableValue<Boolean> call(CellDataFeatures<AbstractBCInventaireStructure, Boolean> param) {
 		
 		ReadOnlyBooleanWrapper valeurCell = null;
-		
-		System.err.println(param.getValue().getValue().isStatutFichierChiffre());
-		
 		switch (cellType) {
 		case STATUT_FICHIER_CHIFFRE:
 			valeurCell = new ReadOnlyBooleanWrapper(param.getValue().getValue().isStatutFichierChiffre());
