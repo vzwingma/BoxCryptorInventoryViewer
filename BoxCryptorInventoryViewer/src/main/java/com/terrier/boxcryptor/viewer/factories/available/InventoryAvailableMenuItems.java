@@ -1,5 +1,10 @@
 package com.terrier.boxcryptor.viewer.factories.available;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
@@ -21,6 +26,11 @@ public class InventoryAvailableMenuItems implements ChangeListener<InventoryFile
 
 
 
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryAvailableMenuItems.class);
+	
 	private final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell;
 
 	/**
@@ -33,14 +43,22 @@ public class InventoryAvailableMenuItems implements ChangeListener<InventoryFile
 	@Override
 	public void changed(ObservableValue<? extends InventoryFileStatutObject> obs,
 			InventoryFileStatutObject oldValue, InventoryFileStatutObject newValue) {
-		if (newValue != null ){ //&& newValue.getStatut() != null && newValue.getStatut().equals(InventoryFileStatutEnum.DISPONIBLE)) {
+		if (newValue != null && newValue.getStatut() != null && newValue.getStatut().equals(InventoryFileStatutEnum.DISPONIBLE)) {
 			
 			final MenuItem getContentItem = new MenuItem("Accéder au fichier");
 			getContentItem.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent event) {
 					// Copie dans le presse papier
-					System.out.println(newValue.getCheminFichier());
+					
+					try {
+						Runtime rt = Runtime.getRuntime();
+						LOGGER.info("Ouverture du fichier [{}]", newValue.getCheminFichier());
+						rt.exec("explorer "+newValue.getCheminFichier());
+					} catch (IOException e) {
+						LOGGER.error("Erreur lors du chargement du fichier [{}]", newValue.getCheminFichier(), e);
+					}
+					
 				}
 			});
 			

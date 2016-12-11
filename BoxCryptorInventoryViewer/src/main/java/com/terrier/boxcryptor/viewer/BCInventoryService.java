@@ -5,11 +5,16 @@ package com.terrier.boxcryptor.viewer;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.utils.BCUtils;
 import com.terrier.boxcryptor.utils.CheckAvailabilityRunnable;
+import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableMenuItems;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
@@ -25,18 +30,25 @@ public class BCInventoryService {
 
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
-	private ExecutorService threadsAvailability = Executors.newFixedThreadPool(1000);
+	private ExecutorService threadsAvailability = Executors.newFixedThreadPool(200);
 	
+
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryAvailableMenuItems.class);
 	/**
 	 * 
 	 * @param repertoireNonChiffre
 	 * @return nom du répertoire root
 	 * @throws IOException
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
-	public void chargeInventaire(String repertoireNonChiffre) throws IOException{
+	public void chargeInventaire(String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(repertoireNonChiffre);
 		this.inventoryItems  = getFullInventoryTreeItems(inventory);
-		threadsAvailability.execute(new CheckAvailabilityRunnable(inventory, "X:", threadsAvailability));
+		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, "X:", threadsAvailability));
 	}
 
 

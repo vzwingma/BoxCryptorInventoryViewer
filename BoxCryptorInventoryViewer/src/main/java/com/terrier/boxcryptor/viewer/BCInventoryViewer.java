@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.terrier.boxcryptor.utils.AvailabilityListener;
 import com.terrier.boxcryptor.utils.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
-import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
@@ -53,6 +52,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	 * @param cheminNonChiffre
 	 */
 	public void startViewInventory(String cheminNonChiffre){
+		AvailabilityNotifier.register(this);
 		BCInventoryViewer.launch(cheminNonChiffre);
 	}
 
@@ -71,7 +71,6 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		AvailabilityNotifier.register(this);
 		/**
 		 * Prepare inventory items
 		 */
@@ -230,7 +229,11 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	@Override
 	public void itemAvailabilityUpdated() {
 		if(this.treeTableView != null){
+			LOGGER.info("Refresh");
 			this.treeTableView.refresh();
+		}
+		else{
+			LOGGER.warn("NoRefresh");
 		}
 	}
 }
