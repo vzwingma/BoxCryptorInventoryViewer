@@ -20,10 +20,10 @@ import javafx.scene.image.ImageView;
  *
  */
 public class InventoryAvailableCellRenderer implements ObservableValue<Node>  {
-	
-	
+
+
 	private final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell;
-	
+
 	/**
 	 * renderer d'icone
 	 * @param cell

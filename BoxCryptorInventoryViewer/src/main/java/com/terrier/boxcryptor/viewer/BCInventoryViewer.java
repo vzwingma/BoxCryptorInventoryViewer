@@ -52,7 +52,6 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	 * @param cheminNonChiffre
 	 */
 	public void startViewInventory(String cheminNonChiffre){
-		AvailabilityNotifier.register(this);
 		BCInventoryViewer.launch(cheminNonChiffre);
 	}
 
@@ -71,6 +70,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		AvailabilityNotifier.register(this);
 		/**
 		 * Prepare inventory items
 		 */
@@ -229,7 +229,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	@Override
 	public void itemAvailabilityUpdated() {
 		if(this.treeTableView != null){
-			LOGGER.info("Refresh");
+			LOGGER.debug("Refresh");
 			this.treeTableView.refresh();
 		}
 		else{
