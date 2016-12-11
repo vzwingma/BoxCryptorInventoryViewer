@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.boxcryptor.viewer.factories;
+package com.terrier.boxcryptor.viewer.factories.available;
 
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;

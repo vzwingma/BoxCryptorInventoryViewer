@@ -26,7 +26,7 @@ public class CheckAvailabilityRunnable implements Runnable {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryViewer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CheckAvailabilityRunnable.class);
 	
 	// Items d'inventaires
 	private BCInventaireRepertoire inventoryItems;

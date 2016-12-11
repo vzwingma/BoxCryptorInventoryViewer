@@ -9,10 +9,10 @@ import com.terrier.boxcryptor.utils.AvailabilityListener;
 import com.terrier.boxcryptor.utils.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
-import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellFactory;
-import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellValueFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
+import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableCellFactory;
+import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableCellValueFactory;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 
