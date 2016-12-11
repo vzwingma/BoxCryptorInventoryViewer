@@ -49,6 +49,7 @@ public class InventoryAvailableCellValueFactory implements Callback<TreeTableCol
 			break;			
 		default:
 			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(InventoryFileStatutEnum.INCONNU, null);
+			break;
 		}
 		return valeurCell;
 	}

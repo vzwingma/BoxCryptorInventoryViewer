@@ -33,7 +33,7 @@ public class InventoryAvailableMenuItems implements ChangeListener<InventoryFile
 	@Override
 	public void changed(ObservableValue<? extends InventoryFileStatutObject> obs,
 			InventoryFileStatutObject oldValue, InventoryFileStatutObject newValue) {
-		if (newValue != null && newValue.getStatut() != null && newValue.getStatut().equals(InventoryFileStatutEnum.DISPONIBLE)) {
+		if (newValue != null ){ //&& newValue.getStatut() != null && newValue.getStatut().equals(InventoryFileStatutEnum.DISPONIBLE)) {
 			
 			final MenuItem getContentItem = new MenuItem("Accéder au fichier");
 			getContentItem.setOnAction(new EventHandler<ActionEvent>(){
