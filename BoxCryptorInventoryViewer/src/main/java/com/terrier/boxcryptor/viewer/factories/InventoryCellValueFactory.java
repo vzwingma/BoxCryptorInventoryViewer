@@ -43,7 +43,7 @@ public class InventoryCellValueFactory implements Callback<TreeTableColumn.CellD
 			break;
 		case NOM_FICHIER_CHIFFRE:
 			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierChiffre());
-			break;
+			break;	
 		default:
 			valeurCell = new ReadOnlyStringWrapper("???");
 		}

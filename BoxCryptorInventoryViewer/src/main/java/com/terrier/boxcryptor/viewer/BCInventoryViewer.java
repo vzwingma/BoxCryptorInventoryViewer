@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellFactory;
+import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellValueFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellEnum;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
@@ -74,7 +76,7 @@ public class BCInventoryViewer extends Application  {
 		}
 		
 
-		this.service.init(repertoireNonChiffre);
+		this.service.chargeInventaire(repertoireNonChiffre);
 		/**
 		 * Show GUI
 		 */
@@ -166,10 +168,10 @@ public class BCInventoryViewer extends Application  {
 		// Menu
 		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
-		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
-		uncryptedStatusColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CLAIR));
 		
-		
+		TreeTableColumn<AbstractBCInventaireStructure, Boolean> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		uncryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CLAIR));
+		uncryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
 		
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
@@ -179,8 +181,10 @@ public class BCInventoryViewer extends Application  {
 		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
 		
-		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
-		cryptedStatusColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CHIFFRE));
+		TreeTableColumn<AbstractBCInventaireStructure, Boolean> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		cryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CHIFFRE));
+		cryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
+		
 		
 		treeTableView.getColumns().setAll(uncryptedDataColumn, uncryptedStatusColumn, cryptedDataColumn, cryptedStatusColumn);
 		// Mise en page du tableau

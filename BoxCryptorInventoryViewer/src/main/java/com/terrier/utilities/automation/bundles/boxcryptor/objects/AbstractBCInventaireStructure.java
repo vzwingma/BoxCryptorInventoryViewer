@@ -21,9 +21,9 @@ public abstract class AbstractBCInventaireStructure {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBCInventaireStructure.class);
 
 	private String _nomFichierChiffre;
-	private boolean statutFichierChiffre;
+	private boolean statutFichierChiffre = false;
 	private String _nomFichierClair;
-	private boolean statutFichierClair;
+	private boolean statutFichierClair = false;
 
 	/**
 	 * Constructeur YML
@@ -128,6 +128,4 @@ public abstract class AbstractBCInventaireStructure {
 	public void setStatutFichierClair(boolean statutFichierClair) {
 		this.statutFichierClair = statutFichierClair;
 	}
-	
-	
 }

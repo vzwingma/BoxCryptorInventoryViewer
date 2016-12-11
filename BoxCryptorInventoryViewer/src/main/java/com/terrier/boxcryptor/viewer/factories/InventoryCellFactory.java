@@ -3,7 +3,6 @@ package com.terrier.boxcryptor.viewer.factories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.viewer.BCInventoryViewer;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.beans.value.ChangeListener;
@@ -30,15 +29,14 @@ public class InventoryCellFactory implements Callback<TreeTableColumn<AbstractBC
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryViewer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryCellFactory.class);
 	
 	
 	/* (non-Javadoc)
 	 * @see javafx.util.Callback#call(java.lang.Object)
 	 */
 	@Override
-	public TreeTableCell<AbstractBCInventaireStructure, String> call(
-			TreeTableColumn<AbstractBCInventaireStructure, String> param) {
+	public TreeTableCell<AbstractBCInventaireStructure, String> call(TreeTableColumn<AbstractBCInventaireStructure, String> param) {
 	    final TreeTableCell<AbstractBCInventaireStructure, String> cell = new TreeTableCell<>();
 	    
 	    

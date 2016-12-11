@@ -61,9 +61,18 @@ public class TestBCUtils {
 		}
 		assertFalse(inventoryFile.exists());
 		// Dump
-		BCInventaireRepertoire testInventory = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "nom en clair");
-		testInventory.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "nom en clair"));
+		BCInventaireRepertoire testInventory = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "repertoire_clair");
+		testInventory.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "fichier_clair"));
 		testInventory.setDateModificationDernierInventaire(Calendar.getInstance().getTimeInMillis());
+		
+		BCInventaireRepertoire ssRepertoire = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓僣庝宽僣庝僣庝受䀊", "ss_repertoire_clair");
+		ssRepertoire.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊1", "fichier_ss_repertoire_clair"));
+		ssRepertoire.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊2", "fichier2_ss_repertoire_clair"));
+		ssRepertoire.setDateModificationDernierInventaire(Calendar.getInstance().getTimeInMillis());
+		
+		
+		testInventory.addSSRepertoire(ssRepertoire);
+		
 		BCUtils.dumpYMLInventory(new File("src/test/resources"), testInventory);
 		
 		assertTrue(inventoryFile.exists());
