@@ -5,6 +5,7 @@ package com.terrier.boxcryptor.viewer.factories.available;
 
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -18,7 +19,7 @@ import javafx.util.Callback;
  * @author vzwingma
  *
  */
-public class InventoryAvailableCellValueFactory implements Callback<TreeTableColumn.CellDataFeatures<AbstractBCInventaireStructure, InventoryFileStatutEnum>, ObservableValue<InventoryFileStatutEnum>> {
+public class InventoryAvailableCellValueFactory implements Callback<TreeTableColumn.CellDataFeatures<AbstractBCInventaireStructure, InventoryFileStatutObject>, ObservableValue<InventoryFileStatutObject>> {
 
 	// Show uncrypted value ?
 	private InventoryCellColumnEnum cellType;
@@ -36,18 +37,18 @@ public class InventoryAvailableCellValueFactory implements Callback<TreeTableCol
 	 * @see javafx.util.Callback#call(java.lang.Object)
 	 */
 	@Override
-	public ObservableValue<InventoryFileStatutEnum> call(CellDataFeatures<AbstractBCInventaireStructure, InventoryFileStatutEnum> param) {
+	public ObservableValue<InventoryFileStatutObject> call(CellDataFeatures<AbstractBCInventaireStructure, InventoryFileStatutObject> param) {
 
-		ReadOnlyObjectWrapper<InventoryFileStatutEnum> valeurCell = null;
+		ReadOnlyObjectWrapper<InventoryFileStatutObject> valeurCell = null;
 		switch (cellType) {
 		case STATUT_FICHIER_CHIFFRE:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutEnum>(param.getValue().getValue().getStatutFichierChiffre());
+			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(param.getValue().getValue().getStatutFichierChiffre());
 			break;
 		case STATUT_FICHIER_CLAIR:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutEnum>(param.getValue().getValue().getStatutFichierClair());
+			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(param.getValue().getValue().getStatutFichierClair());
 			break;			
 		default:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutEnum>(InventoryFileStatutEnum.INCONNU);
+			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(InventoryFileStatutEnum.INCONNU, null);
 		}
 		return valeurCell;
 	}

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.terrier.boxcryptor.utils.AvailabilityListener;
 import com.terrier.boxcryptor.utils.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
-import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
 import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableCellFactory;
@@ -176,7 +176,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
 		
-		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
 		uncryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CLAIR));
 		uncryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
 		
@@ -188,7 +188,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
 		
-		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
 		cryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CHIFFRE));
 		cryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
 		

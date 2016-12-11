@@ -11,8 +11,8 @@ import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.viewer.BCInventoryViewer;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
@@ -82,13 +82,15 @@ public class CheckAvailabilityRunnable implements Runnable {
 	 * @param fileName
 	 * @return si le fichier existe
 	 */
-	private InventoryFileStatutEnum isFileAvailable(String path, String fileName){
+	private InventoryFileStatutObject isFileAvailable(String path, String fileName){
 		//LOGGER.debug("Check local availability de {} : {}", fichier, available);
-		if(Files.exists(FileSystems.getDefault().getPath(path, fileName), LinkOption.NOFOLLOW_LINKS)){
-			return InventoryFileStatutEnum.DISPONIBLE;
+		InventoryFileStatutObject statutObject = new InventoryFileStatutObject(FileSystems.getDefault().getPath(path, fileName), InventoryFileStatutEnum.INCONNU);
+		if(Files.exists(statutObject.getCheminFichier(), LinkOption.NOFOLLOW_LINKS)){
+			statutObject.setStatut(InventoryFileStatutEnum.DISPONIBLE);
 		}
 		else{
-			return InventoryFileStatutEnum.INDISPONIBLE;
+			statutObject.setStatut(InventoryFileStatutEnum.INDISPONIBLE);
 		}
+		return statutObject;
 	}
 }

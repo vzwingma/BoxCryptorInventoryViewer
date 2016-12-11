@@ -5,6 +5,7 @@ package com.terrier.boxcryptor.viewer.factories.available;
 
 import com.terrier.boxcryptor.viewer.BCInventoryViewer;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.beans.InvalidationListener;
@@ -21,13 +22,13 @@ import javafx.scene.image.ImageView;
 public class InventoryAvailableCellRenderer implements ObservableValue<Node>  {
 	
 	
-	private final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> cell;
+	private final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell;
 	
 	/**
 	 * renderer d'icone
 	 * @param cell
 	 */
-	public InventoryAvailableCellRenderer(final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> cell){
+	public InventoryAvailableCellRenderer(final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell){
 		this.cell = cell;
 	}
 
@@ -50,11 +51,15 @@ public class InventoryAvailableCellRenderer implements ObservableValue<Node>  {
 	@Override
 	public Node getValue() {
 		String imagePath = "/images/";
-		InventoryFileStatutEnum valeur = cell.itemProperty().get();
-		if(valeur == null){
-			valeur = InventoryFileStatutEnum.NULL;
+		InventoryFileStatutObject valeur = cell.itemProperty().get();
+		InventoryFileStatutEnum statut = InventoryFileStatutEnum.INCONNU;
+		if(valeur == null || valeur.getStatut() == null){
+			statut = InventoryFileStatutEnum.NULL;
 		}
-		switch (valeur) {
+		else{
+			statut = valeur.getStatut();
+		}
+		switch (statut) {
 		case INCONNU:
 			imagePath += "circle_ukn.png";
 			break;

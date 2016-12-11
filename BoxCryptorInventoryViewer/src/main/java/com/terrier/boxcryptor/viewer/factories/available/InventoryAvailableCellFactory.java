@@ -1,6 +1,6 @@
 package com.terrier.boxcryptor.viewer.factories.available;
 
-import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.scene.control.TreeTableCell;
@@ -12,7 +12,7 @@ import javafx.util.Callback;
  * @author vzwingma
  *
  */
-public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<AbstractBCInventaireStructure,InventoryFileStatutEnum>, TreeTableCell<AbstractBCInventaireStructure,InventoryFileStatutEnum>>{
+public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<AbstractBCInventaireStructure,InventoryFileStatutObject>, TreeTableCell<AbstractBCInventaireStructure,InventoryFileStatutObject>>{
 
 
 
@@ -21,11 +21,10 @@ public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<A
 	 * @see javafx.util.Callback#call(java.lang.Object)
 	 */
 	@Override
-	public TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> call(TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> param) {
-		final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> cell = new TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum>();
+	public TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> call(TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> param) {
+		final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell = new TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject>();
 
 		cell.graphicProperty().bind(new InventoryAvailableCellRenderer(cell));
-		
 		cell.itemProperty().addListener(new InventoryAvailableMenuItems(cell));
 		return cell;
 	}
