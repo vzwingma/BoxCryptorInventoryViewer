@@ -19,14 +19,14 @@ import javafx.util.Callback;
 public class InventoryCellValueFactory implements Callback<TreeTableColumn.CellDataFeatures<AbstractBCInventaireStructure,String>, ObservableValue<String>> {
 
 	// Show uncrypted value ?
-	private boolean uncryptedValue;
+	private InventoryCellEnum cellType;
 	
 	/**
 	 * Constructor
 	 * @param uncryptedValue Show uncrypted value ?
 	 */
-	public InventoryCellValueFactory(boolean uncryptedValue){
-		this.uncryptedValue = uncryptedValue;
+	public InventoryCellValueFactory(InventoryCellEnum cellType){
+		this.cellType = cellType;
 	}
 	
 	
@@ -35,12 +35,19 @@ public class InventoryCellValueFactory implements Callback<TreeTableColumn.CellD
 	 */
 	@Override
 	public ObservableValue<String> call(CellDataFeatures<AbstractBCInventaireStructure, String> param) {
-		if(uncryptedValue){
-			return new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierClair());
+		
+		ReadOnlyStringWrapper valeurCell = null;
+		switch (cellType) {
+		case NOM_FICHIER_CLAIR:
+			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierClair());
+			break;
+		case NOM_FICHIER_CHIFFRE:
+			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierChiffre());
+			break;
+		default:
+			valeurCell = new ReadOnlyStringWrapper("???");
 		}
-		else{
-			return new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierChiffre());
-		}
+		return valeurCell;
 	}
 
 }

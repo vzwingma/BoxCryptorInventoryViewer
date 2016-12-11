@@ -1,17 +1,15 @@
 package com.terrier.boxcryptor.viewer;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.utils.BCUtils;
+import com.terrier.boxcryptor.viewer.factories.InventoryCellEnum;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
-import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -41,6 +39,7 @@ public class BCInventoryViewer extends Application  {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryViewer.class);
 
 
+	private final BCInventoryService service = new BCInventoryService();
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -53,7 +52,6 @@ public class BCInventoryViewer extends Application  {
 	/**
 	 * Full tree items
 	 */
-	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
 	private FlowPane verticalPane;
 
@@ -74,13 +72,13 @@ public class BCInventoryViewer extends Application  {
 		for (String unnamed : unnamedParameters){
 			repertoireNonChiffre = unnamed;
 		}
-		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(repertoireNonChiffre);
-		this.inventoryItems  = prepareInventoryTreeItems(inventory);
+		
 
+		this.service.init(repertoireNonChiffre);
 		/**
 		 * Show GUI
 		 */
-		showGUI(primaryStage, inventory.get_NomFichierClair());
+		showGUI(primaryStage, repertoireNonChiffre);
 	}
 
 
@@ -104,7 +102,6 @@ public class BCInventoryViewer extends Application  {
 
 
 		FlowPane searchPane = new FlowPane(Orientation.HORIZONTAL);
-		//searchPane.setPadding(new Insets(10, 10, 10, 10));
 		searchPane.setHgap(5);
 
 
@@ -117,7 +114,7 @@ public class BCInventoryViewer extends Application  {
 		});
 		searchPane.getChildren().add(searchField);
 
-
+		// Result label
 		this.resultLabel = new Label();
 		this.resultLabel.setMaxHeight(20);
 		searchPane.getChildren().add(this.resultLabel);
@@ -150,7 +147,7 @@ public class BCInventoryViewer extends Application  {
 	public void showFilteredTreeItems(String searchValue){
 		LOGGER.debug("Recherche de [{}] dans l'inventaire", searchValue);
 
-		TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = searchInTreeItem(inventoryItems, searchValue);
+		TreeItem<AbstractBCInventaireStructure> filteredInventoryItems = service.searchInTreeItem(searchValue);
 
 		// nb de résultats
 		int nbResultats = countElements(filteredInventoryItems);
@@ -158,22 +155,34 @@ public class BCInventoryViewer extends Application  {
 		this.resultLabel.setText(nbResultats + " résultat(s)");
 
 		/**
-		 * Create table
+		 * Table de résultats
 		 */
 		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
+		
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
-		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
-		// Affichage
-		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(true));
+		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
+		// Factory d'affichage
+		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.NOM_FICHIER_CLAIR));
 		// Menu
 		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
+		
+		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		uncryptedStatusColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CLAIR));
+		
+		
+		
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
-		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 20)/2);
-		// Affichage
-		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(false));
+		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
+		// Factory d'affichage
+		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.NOM_FICHIER_CHIFFRE));
 		// Menu
 		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
-		treeTableView.getColumns().setAll(uncryptedDataColumn, cryptedDataColumn);
+		
+		
+		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		cryptedStatusColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CHIFFRE));
+		
+		treeTableView.getColumns().setAll(uncryptedDataColumn, uncryptedStatusColumn, cryptedDataColumn, cryptedStatusColumn);
 		// Mise en page du tableau
 		treeTableView.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		treeTableView.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 100);
@@ -201,82 +210,6 @@ public class BCInventoryViewer extends Application  {
 		return nbElements;
 	}
 
-	/**
-	 * Prepare inventory tree items
-	 * @param inventaireRepertoire  inventaireRépertoire
-	 */
-	private TreeItem<AbstractBCInventaireStructure> prepareInventoryTreeItems(final BCInventaireRepertoire inventaireRepertoire){
-		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
-		repertoireItem.setExpanded(true);
-		for (final BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
-			repertoireItem.getChildren().add(
-					new TreeItem<AbstractBCInventaireStructure>(inventaireFichier));
-		}
-		for (final BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
-			repertoireItem.getChildren().add(prepareInventoryTreeItems(inventaireSsRepertoire));
-		}
-
-		// Sort
-		repertoireItem.getChildren().sort(new Comparator<TreeItem<AbstractBCInventaireStructure>>() {
-
-			/* (non-Javadoc)
-			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-			 */
-			@Override
-			public int compare(TreeItem<AbstractBCInventaireStructure> o1, TreeItem<AbstractBCInventaireStructure> o2) {
-				return o1.getValue().get_NomFichierClair().compareToIgnoreCase(o2.getValue().get_NomFichierClair());
-			}
-		});
-
-		return repertoireItem;
-	}
-
-	/**
-	 * @param treeItem
-	 * @param searchValue
-	 */
-	private TreeItem<AbstractBCInventaireStructure> searchInTreeItem(final TreeItem<AbstractBCInventaireStructure> treeItem, final String searchValue){
-
-		// Add directory
-		if(treeItem.getValue() instanceof BCInventaireRepertoire){
-
-			TreeItem<AbstractBCInventaireStructure> newTreeDirectoryItem = new TreeItem<AbstractBCInventaireStructure>();
-			newTreeDirectoryItem.setExpanded(true);
-			newTreeDirectoryItem.setValue(treeItem.getValue());
-			// si c'est le  repertoire qui correspond
-			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
-				for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
-						newTreeDirectoryItem.getChildren().add(subtreeItem);
-				}
-				return newTreeDirectoryItem;
-			}
-			// recherche des sous repertoires
-			else{
-			for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
-				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = searchInTreeItem(subtreeItem, searchValue);
-				if(newTreeFileItem != null){
-					newTreeDirectoryItem.getChildren().add(newTreeFileItem);
-				}
-			}
-			if(newTreeDirectoryItem.getChildren().size() > 0){			
-				return newTreeDirectoryItem;
-			}
-			
-			else{
-				return null;
-			}
-			}
-		}
-		else{
-			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
-				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
-				newTreeFileItem.setExpanded(true);
-				newTreeFileItem.setValue(treeItem.getValue());
-				return newTreeFileItem;
-			}
-			return null;
-		}
-	}
 
 
 }
