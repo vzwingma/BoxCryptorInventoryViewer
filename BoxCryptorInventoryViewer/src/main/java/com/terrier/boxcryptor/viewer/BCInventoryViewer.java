@@ -7,9 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.boxcryptor.utils.AvailabilityListener;
 import com.terrier.boxcryptor.utils.AvailabilityNotifier;
+import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryAvailableCellValueFactory;
-import com.terrier.boxcryptor.viewer.factories.InventoryCellEnum;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellValueFactory;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
@@ -170,25 +171,25 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
 		// Factory d'affichage
-		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.NOM_FICHIER_CLAIR));
+		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellColumnEnum.NOM_FICHIER_CLAIR));
 		// Menu
 		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
 		
-		TreeTableColumn<AbstractBCInventaireStructure, Boolean> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
-		uncryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CLAIR));
+		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		uncryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CLAIR));
 		uncryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
 		
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
 		// Factory d'affichage
-		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellEnum.NOM_FICHIER_CHIFFRE));
+		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellColumnEnum.NOM_FICHIER_CHIFFRE));
 		// Menu
 		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
 		
 		
-		TreeTableColumn<AbstractBCInventaireStructure, Boolean> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
-		cryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellEnum.STATUT_FICHIER_CHIFFRE));
+		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
+		cryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CHIFFRE));
 		cryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
 		
 		

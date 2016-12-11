@@ -1,6 +1,7 @@
 package com.terrier.boxcryptor.viewer.factories;
 
 import com.terrier.boxcryptor.viewer.BCInventoryViewer;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.beans.InvalidationListener;
@@ -17,7 +18,7 @@ import javafx.util.Callback;
  * @author vzwingma
  *
  */
-public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<AbstractBCInventaireStructure,Boolean>, TreeTableCell<AbstractBCInventaireStructure,Boolean>>{
+public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<AbstractBCInventaireStructure,InventoryFileStatutEnum>, TreeTableCell<AbstractBCInventaireStructure,InventoryFileStatutEnum>>{
 
 
 
@@ -26,8 +27,8 @@ public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<A
 	 * @see javafx.util.Callback#call(java.lang.Object)
 	 */
 	@Override
-	public TreeTableCell<AbstractBCInventaireStructure, Boolean> call(TreeTableColumn<AbstractBCInventaireStructure, Boolean> param) {
-		final TreeTableCell<AbstractBCInventaireStructure, Boolean> cell = new TreeTableCell<AbstractBCInventaireStructure, Boolean>();
+	public TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> call(TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutEnum> param) {
+		final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum> cell = new TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutEnum>();
 
 		cell.graphicProperty().bind(new ObservableValue<Node>() {
 
@@ -50,25 +51,35 @@ public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<A
 			@Override
 			public Node getValue() {
 				String imagePath = "/images/";
-				Boolean valeur = cell.itemProperty().get();
-				if(valeur != null){
-					if(valeur.booleanValue()){
-						imagePath += "circle_ok.png";
-					}
-					else{
-						imagePath += "circle_ko.png";
-					}
+				InventoryFileStatutEnum valeur = cell.itemProperty().get();
+				if(valeur == null){
+					valeur = InventoryFileStatutEnum.NULL;
+				}
+				switch (valeur) {
+				case INCONNU:
+					imagePath += "circle_ukn.png";
+					break;
+				case DISPONIBLE:
+					imagePath += "circle_ok.png";
+					break;
+				case INDISPONIBLE:
+					imagePath += "circle_ko.png";
+					break;
+				case NULL:
+				default:
+					imagePath = null;
+					break;
+				}
+
+				if(imagePath != null){
+					ImageView livePerformIcon = new ImageView(BCInventoryViewer.class.getResource(imagePath).toExternalForm());
+					livePerformIcon.setFitHeight(20);
+					livePerformIcon.setFitWidth(20);
+					return livePerformIcon;
 				}
 				else{
-					imagePath += "circle_ukn.png";
 					return null;
 				}
-
-
-				ImageView livePerformIcon = new ImageView(BCInventoryViewer.class.getResource(imagePath).toExternalForm());
-				livePerformIcon.setFitHeight(20);
-				livePerformIcon.setFitWidth(20);
-				return livePerformIcon;
 			}
 
 			@Override

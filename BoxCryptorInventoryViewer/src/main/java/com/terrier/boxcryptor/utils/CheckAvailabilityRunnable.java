@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.boxcryptor.viewer.BCInventoryViewer;
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
@@ -81,8 +82,13 @@ public class CheckAvailabilityRunnable implements Runnable {
 	 * @param fileName
 	 * @return si le fichier existe
 	 */
-	private boolean isFileAvailable(String path, String fileName){
+	private InventoryFileStatutEnum isFileAvailable(String path, String fileName){
 		//LOGGER.debug("Check local availability de {} : {}", fichier, available);
-		return Files.exists(FileSystems.getDefault().getPath(path, fileName), LinkOption.NOFOLLOW_LINKS);
+		if(Files.exists(FileSystems.getDefault().getPath(path, fileName), LinkOption.NOFOLLOW_LINKS)){
+			return InventoryFileStatutEnum.DISPONIBLE;
+		}
+		else{
+			return InventoryFileStatutEnum.INDISPONIBLE;
+		}
 	}
 }

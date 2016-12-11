@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
+
 /**
  * Inventaire
  * @author vzwingma
@@ -21,9 +23,9 @@ public abstract class AbstractBCInventaireStructure {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBCInventaireStructure.class);
 
 	private String _nomFichierChiffre;
-	private boolean statutFichierChiffre = false;
+	private InventoryFileStatutEnum statutFichierChiffre = InventoryFileStatutEnum.INCONNU;
 	private String _nomFichierClair;
-	private boolean statutFichierClair = false;
+	private InventoryFileStatutEnum statutFichierClair = InventoryFileStatutEnum.INCONNU;
 
 	/**
 	 * Constructeur YML
@@ -104,28 +106,29 @@ public abstract class AbstractBCInventaireStructure {
 	/**
 	 * @return the statutFichierChiffre
 	 */
-	public boolean isStatutFichierChiffre() {
+	public InventoryFileStatutEnum getStatutFichierChiffre() {
 		return statutFichierChiffre;
 	}
 
 	/**
 	 * @param statutFichierChiffre the statutFichierChiffre to set
 	 */
-	public void setStatutFichierChiffre(boolean statutFichierChiffre) {
+	public void setStatutFichierChiffre(InventoryFileStatutEnum statutFichierChiffre) {
 		this.statutFichierChiffre = statutFichierChiffre;
 	}
 
 	/**
 	 * @return the statutFichierClair
 	 */
-	public boolean isStatutFichierClair() {
+	public InventoryFileStatutEnum getStatutFichierClair() {
 		return statutFichierClair;
 	}
 
 	/**
 	 * @param statutFichierClair the statutFichierClair to set
 	 */
-	public void setStatutFichierClair(boolean statutFichierClair) {
+	public void setStatutFichierClair(InventoryFileStatutEnum statutFichierClair) {
 		this.statutFichierClair = statutFichierClair;
 	}
+
 }

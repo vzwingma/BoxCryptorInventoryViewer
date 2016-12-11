@@ -3,6 +3,7 @@
  */
 package com.terrier.boxcryptor.viewer.factories;
 
+import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -19,13 +20,13 @@ import javafx.util.Callback;
 public class InventoryCellValueFactory implements Callback<TreeTableColumn.CellDataFeatures<AbstractBCInventaireStructure,String>, ObservableValue<String>> {
 
 	// Show uncrypted value ?
-	private InventoryCellEnum cellType;
+	private InventoryCellColumnEnum cellType;
 	
 	/**
 	 * Constructor
 	 * @param uncryptedValue Show uncrypted value ?
 	 */
-	public InventoryCellValueFactory(InventoryCellEnum cellType){
+	public InventoryCellValueFactory(InventoryCellColumnEnum cellType){
 		this.cellType = cellType;
 	}
 	
