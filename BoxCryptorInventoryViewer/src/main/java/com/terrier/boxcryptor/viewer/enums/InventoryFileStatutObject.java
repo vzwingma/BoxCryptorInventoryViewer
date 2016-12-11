@@ -42,6 +42,15 @@ public class InventoryFileStatutObject {
 	public void setStatut(InventoryFileStatutEnum statut) {
 		this.statut = statut;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.statut.equals(InventoryFileStatutEnum.DISPONIBLE) ? "Accéder" : ""; 
+	}
+	
 	
 	
 }
