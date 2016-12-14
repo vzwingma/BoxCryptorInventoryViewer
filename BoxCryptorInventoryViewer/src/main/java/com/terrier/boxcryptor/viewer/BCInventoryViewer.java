@@ -19,6 +19,7 @@ import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireF
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,6 +27,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -56,13 +58,14 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	}
 
 
-	/**
-	 * Full tree items
-	 */
-	private TreeTableView<AbstractBCInventaireStructure> treeTableView;
+	// Rang
+	private static final int RG_FLOWPANE = 0;
+	private static final int RG_LABEL_RESULTAT = 1;
+	private static final int RG_TREE_TABLE_VIEW = 1;
+	private static final int RG_LABEL_INFO = 2;
 	private FlowPane verticalPane;
 
-	private Label resultLabel;
+	
 
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
@@ -123,20 +126,27 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		searchPane.getChildren().add(searchField);
 
 		// Result label
-		this.resultLabel = new Label();
-		this.resultLabel.setMaxHeight(20);
-		searchPane.getChildren().add(this.resultLabel);
+		Label resultLabel = new Label();
+		resultLabel.setMaxHeight(20);
+		searchPane.getChildren().add(resultLabel);
 		verticalPane.getChildren().add(searchPane);
+
 		/**
 		 * Create table
 		 */
-		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>();
-
-		verticalPane.getChildren().add(treeTableView);
+		verticalPane.getChildren().add(RG_TREE_TABLE_VIEW, new TreeTableView<AbstractBCInventaireStructure>());
 		/**
 		 * Search tree items
 		 */
 		showFilteredTreeItems(null);
+		
+		
+		// Info label
+		Label infoLabel = new Label();
+		infoLabel.setMaxHeight(20);
+		infoLabel.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 100);
+		verticalPane.getChildren().add(RG_LABEL_INFO, infoLabel);
+		
 		/**
 		 * Show Inventory
 		 */
@@ -161,12 +171,13 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		// nb de résultats
 		int nbResultats = countElements(filteredInventoryItems);
 		LOGGER.debug(" >> [{}] résultats" , nbResultats);
-		this.resultLabel.setText(nbResultats + " résultat(s)");
+		
+		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s)");
 
 		/**
 		 * Table de résultats
 		 */
-		this.treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
+		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
 		
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
@@ -196,10 +207,10 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		treeTableView.getColumns().setAll(uncryptedDataColumn, uncryptedStatusColumn, cryptedDataColumn, cryptedStatusColumn);
 		// Mise en page du tableau
 		treeTableView.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
-		treeTableView.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 100);
+		treeTableView.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 120);
 		treeTableView.setPadding(new Insets(10, 10, 10, 10));
-		verticalPane.getChildren().remove(1);
-		verticalPane.getChildren().add(treeTableView);
+		verticalPane.getChildren().remove(RG_TREE_TABLE_VIEW);
+		verticalPane.getChildren().add(RG_TREE_TABLE_VIEW, treeTableView);
 	}
 
 	/**
@@ -227,13 +238,33 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	 * @see com.terrier.boxcryptor.utils.AvailabilityListener#availabilityUpdated()
 	 */
 	@Override
-	public void itemAvailabilityUpdated() {
-		if(this.treeTableView != null){
-			LOGGER.debug("Refresh");
-			this.treeTableView.refresh();
+	public void itemAvailabilityUpdated(int pourcentage) {
+		if(findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class) != null){
+			LOGGER.debug ("Refresh : {}%", pourcentage);
+			findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).refresh();
 		}
-		else{
-			LOGGER.warn("NoRefresh");
-		}
+//		if(this.verticalPane.getChildren().get(RG_INFO) != null){
+//			((Label)this.verticalPane.getChildren().get(RG_INFO)).setText("Génération de la disponibilité locale des fichiers : " + pourcentage + " %");
+//		}
+	}
+	
+	
+	/**
+	 * @param rang rang du noeud
+	 * @param classeComponent classe du composant
+	 * @return node correspondant au node
+	 */
+	private <T extends Node> T findComponent(int rang, Class<T> classeComponent){
+		return findComponent(this.verticalPane, rang, classeComponent);
+	}
+	
+	/**
+	 * @param rang rang du noeud
+	 * @param classeComponent classe du composant
+	 * @return node correspondant au node
+	 */
+	@SuppressWarnings("unchecked")
+	private <T extends Node> T findComponent(Pane rootPane, int rang, Class<T> classeComponent){
+		return (T)rootPane.getChildren().get(rang);
 	}
 }

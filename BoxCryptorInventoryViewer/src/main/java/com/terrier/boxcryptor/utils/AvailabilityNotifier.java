@@ -13,21 +13,36 @@ import java.util.List;
  */
 public abstract class AvailabilityNotifier {
 
+	/**
+	 * Listement de la disponibilité
+	 */
 	private static final List<AvailabilityListener> availabilityListeners = new ArrayList<AvailabilityListener>();
 
 	
+	/**
+	 * Enregistrement des listeners
+	 * @param listener
+	 */
 	public static void register(AvailabilityListener listener){
 		availabilityListeners.add(listener);
 	}
 	
+	/**
+	 * Unenregistrement des listeners
+	 * @param listener
+	 */
 	public static void unregister(AvailabilityListener listener){
 		availabilityListeners.remove(listener);
 	}
 	
 	
-	public static void notifyAvailabilityUpdate(){
+	/**
+	 * Notification de la disponibilité
+	 * @param pourcentageAvancement pourcentage
+	 */
+	public static void notifyAvailabilityUpdate(int pourcentageAvancement){
 		for (AvailabilityListener availabilityListener : availabilityListeners) {
-			availabilityListener.itemAvailabilityUpdated();
+			availabilityListener.itemAvailabilityUpdated(pourcentageAvancement);
 		}
 	}
 }

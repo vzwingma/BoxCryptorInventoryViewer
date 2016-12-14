@@ -6,7 +6,7 @@ package com.terrier.boxcryptor.utils;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +33,11 @@ public class CheckAvailabilityRunnable implements Runnable {
 	
 	private String repertoireNonChiffre;
 
-	private ExecutorService threadsAvailability;
+	private ThreadPoolExecutor threadsAvailability;
 	/**
 	 * @param inventoryItems
 	 */
-	public CheckAvailabilityRunnable(BCInventaireRepertoire inventoryItems, String repertoireNonChiffre, ExecutorService threadsAvailability) {
+	public CheckAvailabilityRunnable(BCInventaireRepertoire inventoryItems, String repertoireNonChiffre, ThreadPoolExecutor threadsAvailability) {
 		super();
 		this.inventoryItems = inventoryItems;
 		this.repertoireNonChiffre = repertoireNonChiffre;
@@ -53,8 +53,9 @@ public class CheckAvailabilityRunnable implements Runnable {
 	@Override
 	public void run() {
 		updateAvailability(this.inventoryItems, repertoireNonChiffre);
-		LOGGER.debug("Check de la disponbilité de {}", this.inventoryItems.get_NomFichierClair());
-		AvailabilityNotifier.notifyAvailabilityUpdate();
+		LOGGER.debug("Check de la disponbilité de {})", 
+				this.inventoryItems.get_NomFichierClair());
+		AvailabilityNotifier.notifyAvailabilityUpdate(100 * (this.threadsAvailability.getPoolSize() - this.threadsAvailability.getActiveCount() + 1) / this.threadsAvailability.getPoolSize());
 	}
 
 

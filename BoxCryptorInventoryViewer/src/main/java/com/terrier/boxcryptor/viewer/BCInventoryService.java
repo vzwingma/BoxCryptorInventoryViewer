@@ -6,8 +6,8 @@ package com.terrier.boxcryptor.viewer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class BCInventoryService {
 
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
-	private ExecutorService threadsAvailability = Executors.newFixedThreadPool(200);
+	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();;
 	
 
 	/**
