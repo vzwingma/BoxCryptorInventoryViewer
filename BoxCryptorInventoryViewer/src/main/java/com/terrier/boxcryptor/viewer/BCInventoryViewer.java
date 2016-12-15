@@ -17,6 +17,7 @@ import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInv
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -37,7 +38,7 @@ import javafx.stage.Stage;
  * @author vzwingma
  *
  */
-public class BCInventoryViewer extends Application implements AvailabilityListener {
+public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 
 	/**
@@ -47,7 +48,7 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 
 
 	private final BCInventoryService service = new BCInventoryService();
-	
+
 
 	/**
 	 * Start of inventory viewer
@@ -63,9 +64,9 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	private static final int RG_LABEL_RESULTAT = 1;
 	private static final int RG_TREE_TABLE_VIEW = 1;
 	private static final int RG_LABEL_INFO = 2;
-	private FlowPane verticalPane;
-
 	
+
+
 
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
@@ -78,18 +79,21 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		 * Prepare inventory items
 		 */
 		// Retrieve the directory paramter
-		String repertoireNonChiffre = null;
+		String[] unnamedParam = null;
 		List<String> unnamedParameters = getParameters().getUnnamed();
 		for (String unnamed : unnamedParameters){
-			repertoireNonChiffre = unnamed;
+			unnamedParam = unnamed != null ? unnamed.split("/") : null;
 		}
-		
+		if(unnamedParam != null){
+			this.service.chargeInventaire(unnamedParam[0], unnamedParam[1]);
 
-		this.service.chargeInventaire(repertoireNonChiffre);
-		/**
-		 * Show GUI
-		 */
-		showGUI(primaryStage, repertoireNonChiffre);
+
+			/**
+			 * Show GUI
+			 */
+			primaryStage.setTitle("Inventory Viewer [" + unnamedParam[1] + "]");  
+			showGUI(primaryStage);
+		}
 	}
 
 
@@ -100,17 +104,15 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	 * @param primaryStage
 	 * @param inventoryItems
 	 */
-	private void showGUI(Stage primaryStage, String inventoryName){
-
-		primaryStage.setTitle("Inventory Viewer [" + inventoryName + "]");        
+	private void showGUI(Stage primaryStage){
 		primaryStage.setMaximized(true);
 
 		//Mise en page
-		this.verticalPane = new FlowPane(Orientation.VERTICAL);
+		FlowPane verticalPane = new FlowPane(Orientation.VERTICAL);
 		verticalPane.setPadding(new Insets(10, 10, 10, 10));
 		verticalPane.setVgap(5);
 		verticalPane.setHgap(5);
-
+		setRootPane(verticalPane);
 
 		FlowPane searchPane = new FlowPane(Orientation.HORIZONTAL);
 		searchPane.setHgap(5);
@@ -129,24 +131,24 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		Label resultLabel = new Label();
 		resultLabel.setMaxHeight(20);
 		searchPane.getChildren().add(resultLabel);
-		verticalPane.getChildren().add(searchPane);
+		addNodeInPane(RG_FLOWPANE, searchPane);
 
 		/**
 		 * Create table
 		 */
-		verticalPane.getChildren().add(RG_TREE_TABLE_VIEW, new TreeTableView<AbstractBCInventaireStructure>());
+		addNodeInPane(RG_TREE_TABLE_VIEW, new TreeTableView<AbstractBCInventaireStructure>());
 		/**
 		 * Search tree items
 		 */
 		showFilteredTreeItems(null);
-		
-		
+
+
 		// Info label
-		Label infoLabel = new Label();
+		Label infoLabel = new Label("TEXT");
 		infoLabel.setMaxHeight(20);
 		infoLabel.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 100);
-		verticalPane.getChildren().add(RG_LABEL_INFO, infoLabel);
-		
+		addNodeInPane(RG_LABEL_INFO, infoLabel);
+
 		/**
 		 * Show Inventory
 		 */
@@ -171,46 +173,45 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 		// nb de résultats
 		int nbResultats = countElements(filteredInventoryItems);
 		LOGGER.debug(" >> [{}] résultats" , nbResultats);
-		
+
 		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s)");
 
 		/**
 		 * Table de résultats
 		 */
 		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
-		
+
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
 		// Factory d'affichage
 		uncryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellColumnEnum.NOM_FICHIER_CLAIR));
 		// Menu
 		uncryptedDataColumn.setCellFactory(new InventoryCellFactory());
-		
-		
+
+
 		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> uncryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
 		uncryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CLAIR));
 		uncryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
-		
+
 		TreeTableColumn<AbstractBCInventaireStructure, String> cryptedDataColumn = new TreeTableColumn<>("Nom de fichier chiffré");
 		cryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
 		// Factory d'affichage
 		cryptedDataColumn.setCellValueFactory(new InventoryCellValueFactory(InventoryCellColumnEnum.NOM_FICHIER_CHIFFRE));
 		// Menu
 		cryptedDataColumn.setCellFactory(new InventoryCellFactory());
-		
-		
+
+
 		TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> cryptedStatusColumn = new TreeTableColumn<>("Statut du fichier");
 		cryptedStatusColumn.setCellValueFactory(new InventoryAvailableCellValueFactory(InventoryCellColumnEnum.STATUT_FICHIER_CHIFFRE));
 		cryptedStatusColumn.setCellFactory(new InventoryAvailableCellFactory());
-		
-		
+
+
 		treeTableView.getColumns().setAll(uncryptedDataColumn, uncryptedStatusColumn, cryptedDataColumn, cryptedStatusColumn);
 		// Mise en page du tableau
 		treeTableView.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		treeTableView.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 120);
 		treeTableView.setPadding(new Insets(10, 10, 10, 10));
-		verticalPane.getChildren().remove(RG_TREE_TABLE_VIEW);
-		verticalPane.getChildren().add(RG_TREE_TABLE_VIEW, treeTableView);
+		refreshNodeInPane(RG_TREE_TABLE_VIEW, treeTableView);
 	}
 
 	/**
@@ -239,32 +240,21 @@ public class BCInventoryViewer extends Application implements AvailabilityListen
 	 */
 	@Override
 	public void itemAvailabilityUpdated(int pourcentage) {
-		if(findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class) != null){
-			LOGGER.debug ("Refresh : {}%", pourcentage);
-			findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).refresh();
-		}
-//		if(this.verticalPane.getChildren().get(RG_INFO) != null){
-//			((Label)this.verticalPane.getChildren().get(RG_INFO)).setText("Génération de la disponibilité locale des fichiers : " + pourcentage + " %");
-//		}
-	}
-	
-	
-	/**
-	 * @param rang rang du noeud
-	 * @param classeComponent classe du composant
-	 * @return node correspondant au node
-	 */
-	private <T extends Node> T findComponent(int rang, Class<T> classeComponent){
-		return findComponent(this.verticalPane, rang, classeComponent);
-	}
-	
-	/**
-	 * @param rang rang du noeud
-	 * @param classeComponent classe du composant
-	 * @return node correspondant au node
-	 */
-	@SuppressWarnings("unchecked")
-	private <T extends Node> T findComponent(Pane rootPane, int rang, Class<T> classeComponent){
-		return (T)rootPane.getChildren().get(rang);
+		
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if(findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class) != null){
+					LOGGER.trace ("Refresh : {}%", pourcentage);
+					((TreeTableColumn)findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).getColumns().get(1)).setVisible(false);
+					((TreeTableColumn)findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).getColumns().get(1)).setVisible(true);
+				}
+				if(findComponent(RG_LABEL_INFO, Label.class) != null){
+					findComponent(RG_LABEL_INFO, Label.class).setText("Génération de la disponibilité locale des fichiers : " + pourcentage + " %");
+				}
+			}
+		});
+		
 	}
 }

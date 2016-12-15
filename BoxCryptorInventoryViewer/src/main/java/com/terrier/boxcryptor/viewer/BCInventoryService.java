@@ -45,10 +45,10 @@ public class BCInventoryService {
 	 * @throws ExecutionException 
 	 * @throws InterruptedException 
 	 */
-	public void chargeInventaire(String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
-		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(repertoireNonChiffre);
+	public void chargeInventaire(String lecteur, String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
+		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(lecteur + "/" + repertoireNonChiffre);
 		this.inventoryItems  = getFullInventoryTreeItems(inventory);
-		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, "X:", threadsAvailability));
+		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, lecteur, threadsAvailability));
 	}
 
 

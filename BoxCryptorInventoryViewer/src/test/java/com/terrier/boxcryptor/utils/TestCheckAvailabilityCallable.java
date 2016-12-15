@@ -9,6 +9,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class TestCheckAvailabilityCallable {
 		// Load
 		BCInventaireRepertoire loadedInventory = BCUtils.loadYMLInventory(testDir.getPath());
 		assertNotNull(loadedInventory);
-		CheckAvailabilityRunnable callable = new CheckAvailabilityRunnable(loadedInventory, testDir.getAbsolutePath(), Executors.newFixedThreadPool(10));
+		CheckAvailabilityRunnable callable = new CheckAvailabilityRunnable(loadedInventory, testDir.getAbsolutePath(),(ThreadPoolExecutor)Executors.newFixedThreadPool(10));
 		callable.run();
 		
 	}
