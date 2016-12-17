@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 
 /**
@@ -23,9 +24,9 @@ public abstract class AbstractBCInventaireStructure {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBCInventaireStructure.class);
 
 	private String _nomFichierChiffre;
-	private InventoryFileStatutObject statutFichierChiffre;
+	private InventoryFileStatutObject statutFichierChiffre = new InventoryFileStatutObject(null, InventoryFileStatutEnum.INCONNU);
 	private String _nomFichierClair;
-	private InventoryFileStatutObject statutFichierClair;
+	private InventoryFileStatutObject statutFichierClair = new InventoryFileStatutObject(null, InventoryFileStatutEnum.INCONNU);
 
 	/**
 	 * Constructeur YML
