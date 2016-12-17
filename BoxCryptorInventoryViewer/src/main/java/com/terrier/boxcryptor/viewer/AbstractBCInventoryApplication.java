@@ -3,7 +3,7 @@
  */
 package com.terrier.boxcryptor.viewer;
 
-import com.terrier.boxcryptor.utils.AvailabilityListener;
+import com.terrier.boxcryptor.service.available.local.AvailabilityListener;
 
 import javafx.application.Application;
 import javafx.scene.Node;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.boxcryptor.utils;
+package com.terrier.boxcryptor.service.available.local;
 
 /**
  * @author vzwingma

@@ -12,8 +12,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.boxcryptor.service.available.local.CheckAvailabilityRunnable;
 import com.terrier.boxcryptor.utils.BCUtils;
-import com.terrier.boxcryptor.utils.CheckAvailabilityRunnable;
 import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableMenuItems;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;

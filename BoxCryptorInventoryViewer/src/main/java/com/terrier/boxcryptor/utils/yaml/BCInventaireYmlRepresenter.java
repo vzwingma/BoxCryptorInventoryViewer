@@ -1,4 +1,4 @@
-package com.terrier.boxcryptor.utils;
+package com.terrier.boxcryptor.utils.yaml;
 
 import org.yaml.snakeyaml.introspector.Property;
 import org.yaml.snakeyaml.nodes.NodeTuple;

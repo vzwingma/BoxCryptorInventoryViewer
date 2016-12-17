@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.utils.AvailabilityNotifier;
+import com.terrier.boxcryptor.service.available.local.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
 import com.terrier.boxcryptor.viewer.factories.InventoryCellFactory;

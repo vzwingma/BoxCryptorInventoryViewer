@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import com.terrier.boxcryptor.utils.yaml.BCInventaireYmlRepresenter;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 

@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.junit.Test;
 
+import com.terrier.boxcryptor.service.available.local.CheckAvailabilityRunnable;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
 /**
