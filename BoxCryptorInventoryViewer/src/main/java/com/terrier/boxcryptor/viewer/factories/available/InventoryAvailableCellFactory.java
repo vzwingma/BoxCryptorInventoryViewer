@@ -23,8 +23,6 @@ public class InventoryAvailableCellFactory implements Callback<TreeTableColumn<A
 	@Override
 	public TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> call(TreeTableColumn<AbstractBCInventaireStructure, InventoryFileStatutObject> param) {
 		final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell = new TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject>();
-
-		
 		cell.textProperty().bind(cell.itemProperty().asString());
 		cell.graphicProperty().bind(new InventoryAvailableCellRenderer(cell));
 		cell.itemProperty().addListener(new InventoryAvailableMenuItems(cell));

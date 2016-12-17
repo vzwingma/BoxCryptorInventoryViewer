@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.boxcryptor.utils.AvailabilityListener;
 import com.terrier.boxcryptor.utils.AvailabilityNotifier;
 import com.terrier.boxcryptor.viewer.enums.InventoryCellColumnEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
@@ -16,11 +15,9 @@ import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableCellV
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,7 +25,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
