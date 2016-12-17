@@ -50,7 +50,7 @@ public class BCUtils {
 	 */
 	public static void dumpYMLInventory(final File repertoire, final BCInventaireRepertoire inventaireR) throws IOException{
 
-		Yaml yml = new Yaml();
+		Yaml yml = new Yaml(new BCInventaireYmlRepresenter());
 		File inventoryFile = new File(repertoire.getAbsolutePath(), BCUtils.INVENTORY_FILENAME);
 		if(!inventoryFile.exists()){
 			inventoryFile.createNewFile();
@@ -71,7 +71,7 @@ public class BCUtils {
 			File inventoryFile = new File(repertoire, BCUtils.INVENTORY_FILENAME);
 			if(inventoryFile.exists()){
 				LOGGER.info("Chargement de l'inventaire depuis {}", inventoryFile.getCanonicalPath());
-				Yaml yml = new Yaml();
+				Yaml yml = new Yaml(new BCInventaireYmlRepresenter());
 				return yml.loadAs(new FileInputStream(inventoryFile), BCInventaireRepertoire.class);
 			}
 		}

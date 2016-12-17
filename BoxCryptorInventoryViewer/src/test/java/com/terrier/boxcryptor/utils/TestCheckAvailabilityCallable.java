@@ -36,7 +36,7 @@ public class TestCheckAvailabilityCallable {
 		charset.set(null,null);
 		
 		
-		File testDir = new File("src/test/resources");
+		File testDir = new File("src/test/resources/available");
 		// Load
 		BCInventaireRepertoire loadedInventory = BCUtils.loadYMLInventory(testDir.getPath());
 		assertNotNull(loadedInventory);
