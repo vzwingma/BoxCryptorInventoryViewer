@@ -31,7 +31,7 @@ public class BCInventoryService {
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
 
 	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();;
-	
+
 
 	/**
 	 * Logger
@@ -123,19 +123,18 @@ public class BCInventoryService {
 				if(newTreeDirectoryItem.getChildren().size() > 0){			
 					return newTreeDirectoryItem;
 				}
-
 				else{
 					return null;
 				}
 			}
 		}
+		else if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
+			TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
+			newTreeFileItem.setExpanded(true);
+			newTreeFileItem.setValue(treeItem.getValue());
+			return newTreeFileItem;
+		}
 		else{
-			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
-				TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
-				newTreeFileItem.setExpanded(true);
-				newTreeFileItem.setValue(treeItem.getValue());
-				return newTreeFileItem;
-			}
 			return null;
 		}
 	}
