@@ -9,5 +9,5 @@ package com.terrier.boxcryptor.viewer.enums;
  *
  */
 public enum InventoryFileStatutEnum {
-	NULL, INCONNU, INDISPONIBLE, DISPONIBLE;
+	INCONNU, INDISPONIBLE, DISPONIBLE;
 }
