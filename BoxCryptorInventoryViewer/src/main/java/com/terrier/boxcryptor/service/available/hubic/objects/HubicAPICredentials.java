@@ -1,4 +1,4 @@
-package com.terrier.boxcryptor.utils;
+package com.terrier.boxcryptor.service.available.hubic.objects;
 
 public class HubicAPICredentials {
 

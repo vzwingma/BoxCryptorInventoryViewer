@@ -1,33 +1,52 @@
 package com.terrier.boxcryptor.service.available.hubic;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.terrier.boxcryptor.utils.HubicAPICredentials;
+import com.terrier.boxcryptor.service.available.hubic.objects.HubicAPIContent;
+import com.terrier.boxcryptor.service.available.hubic.objects.HubicAPICredentials;
+import com.terrier.boxcryptor.utils.AbstractHTTPClient;
+import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
 
-public class CheckHubicAvailabilityRunnable implements Runnable {
+public class CheckHubicAvailabilityRunnable extends AbstractHTTPClient implements Runnable {
 
 
-	public static final String HUBIC_API = "https://api.hubic.com/1.0/";
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CheckHubicAvailabilityRunnable.class);
+
+	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	
+	// Items d'inventaires
+	private BCInventaireRepertoire inventoryItems;
+
+	String bearerAuth = "ZdLFdirKHcGJpOZAq5gvITA4anURmz08FxCHxZIDk4VFOW5iD6JvQu9yRiKCJh4B";
 
 
-	String bearerAuth = "rhLnTaJyMjyFqRDqXwLTuSU1qlKx83JfK0hgVRUPfm023iY6rg2IiOJY1BCnJxZ5";
+	public CheckHubicAvailabilityRunnable(BCInventaireRepertoire inventaireRepertoire){
+		this.inventoryItems = inventaireRepertoire;
+	}
+
 
 	@Override
 	public void run() {
-
 		HubicAPICredentials credentials = authToHubic(bearerAuth);
-
-		String backupContainer = "HubiC-DeskBackup_eBooks";
-		getContentFromBackup(backupContainer, credentials);
+		if(credentials != null){
+			String backupContainer = "HubiC-DeskBackup_eBooks";
+			List<HubicAPIContent> contents = getContentFromBackup(backupContainer, credentials);
+			this.threadsAvailability.submit(new CheckHubicAvailabilityFileRunnable(this.inventoryItems, contents, this.threadsAvailability));
+		}
+		else{
+			LOGGER.error("Erreur lors de la connexion à HUBIC");
+		}
 	}
 
 
@@ -36,37 +55,33 @@ public class CheckHubicAvailabilityRunnable implements Runnable {
 	 * @param httpClient
 	 * @return authenticate
 	 */
-	private HubicAPICredentials authToHubic(String bearerAuth){
-		HttpClient httpClient = HttpClientBuilder.create().build();
+	protected HubicAPICredentials authToHubic(String bearerAuth){
+
 		HttpGet request = new HttpGet(HUBIC_API + "account/credentials");
 		request.addHeader("Authorization", "Bearer " + bearerAuth);
-		try {
-			HttpResponse response = httpClient.execute(request);
-			return new Gson().fromJson(new InputStreamReader(response.getEntity().getContent(), "UTF-8"), HubicAPICredentials.class);
-		} catch (IOException e) {
-			return null;
-		}
+		return executeHTTPRequest(request, HubicAPICredentials.class);
+
 	}
 
 
-	private void getContentFromBackup(String containerName, HubicAPICredentials credentials){
+	/**
+	 * @param containerName
+	 * @param credentials
+	 * @return contents
+	 */
+	protected List<HubicAPIContent> getContentFromBackup(String containerName, HubicAPICredentials credentials){
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		List<HubicAPIContent> listeContents = new ArrayList<>();
+
 		HttpGet request = new HttpGet(credentials.getEndpoint()+"/"+ containerName+ "?format=json");
-		try {
-			request.addHeader("X-Auth-Token", credentials.getToken());
-			HttpResponse response = httpClient.execute(request);
-			List<LinkedTreeMap> containers3 = new Gson().fromJson(new InputStreamReader(response.getEntity().getContent(), "UTF-8"), List.class);
-		} catch (IOException e) {
-			
+		request.addHeader("X-Auth-Token", credentials.getToken());
+		@SuppressWarnings("unchecked")
+		List<LinkedTreeMap<String, String>> containerContent = executeHTTPRequest(request, List.class);
+		if(containerContent != null){
+			listeContents.addAll(HubicAPIContent.getContents(containerContent));
 		}
-		//		//		String res3 = g(response3.getEntity().getContent());
-		//		//		System.err.println(response3.getStatusLine() + " : "+ res3);
-		//		
-		//
-		//	//	System.err.println(response3.getStatusLine() + " : " + containers3);
-		//		for (LinkedTreeMap object : containers3) {
-		//			System.err.println(object.get("name"));
-		//		}
+		return listeContents;
 	}
+
+
 }

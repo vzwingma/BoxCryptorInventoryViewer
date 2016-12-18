@@ -84,7 +84,6 @@ public class CheckAvailabilityRunnable implements Runnable {
 	 * @return si le fichier existe
 	 */
 	private InventoryFileStatutObject isFileAvailable(String path, String fileName){
-		//LOGGER.debug("Check local availability de {} : {}", fichier, available);
 		InventoryFileStatutObject statutObject = new InventoryFileStatutObject(FileSystems.getDefault().getPath(path, fileName), InventoryFileStatutEnum.INCONNU);
 		if(Files.exists(statutObject.getCheminFichier(), LinkOption.NOFOLLOW_LINKS)){
 			statutObject.setStatut(InventoryFileStatutEnum.DISPONIBLE);
