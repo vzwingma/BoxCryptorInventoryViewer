@@ -28,11 +28,16 @@ public class CheckHubicAvailabilityRunnable extends AbstractHTTPClient implement
 	// Items d'inventaires
 	private BCInventaireRepertoire inventoryItems;
 
+	private String backupContainer;
+	
+	
 	String bearerAuth = "ZdLFdirKHcGJpOZAq5gvITA4anURmz08FxCHxZIDk4VFOW5iD6JvQu9yRiKCJh4B";
 
 
-	public CheckHubicAvailabilityRunnable(BCInventaireRepertoire inventaireRepertoire){
+	public CheckHubicAvailabilityRunnable(String nomRepertoireSauvegarde, BCInventaireRepertoire inventaireRepertoire){
 		this.inventoryItems = inventaireRepertoire;
+		this.backupContainer = "HubiC-DeskBackup_" + nomRepertoireSauvegarde;
+		LOGGER.info("Recherche de la disponibilité des fichiers dans la sauvegarde {}", this.backupContainer);
 	}
 
 
@@ -40,7 +45,7 @@ public class CheckHubicAvailabilityRunnable extends AbstractHTTPClient implement
 	public void run() {
 		HubicAPICredentials credentials = authToHubic(bearerAuth);
 		if(credentials != null){
-			String backupContainer = "HubiC-DeskBackup_eBooks";
+			
 			List<HubicAPIContent> contents = getContentFromBackup(backupContainer, credentials);
 			this.threadsAvailability.submit(new CheckHubicAvailabilityFileRunnable(this.inventoryItems, contents, this.threadsAvailability));
 		}

@@ -140,7 +140,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 
 		// Info label
-		Label infoLabel = new Label("TEXT");
+		Label infoLabel = new Label();
 		infoLabel.setMaxHeight(20);
 		infoLabel.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 100);
 		addNodeInPane(RG_LABEL_INFO, infoLabel);
@@ -153,6 +153,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		primaryStage.setScene(new Scene(root));
 
 		primaryStage.show();
+
 	}
 
 

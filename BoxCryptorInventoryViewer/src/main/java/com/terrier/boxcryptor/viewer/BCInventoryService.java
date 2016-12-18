@@ -25,14 +25,12 @@ import javafx.scene.control.TreeItem;
  */
 public class BCInventoryService {
 
+	// Inventaire
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
-
+	// Thread
 	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
 
-	/**
-	 * Logger
-	 */
 	//private static final Logger LOGGER = LoggerFactory.getLogger(InventoryAvailableMenuItems.class);
 	/**
 	 * 
@@ -46,7 +44,7 @@ public class BCInventoryService {
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(lecteur + "/" + repertoireNonChiffre);
 		this.inventoryItems  = getFullInventoryTreeItems(inventory);
 		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, lecteur, threadsAvailability));
-		threadsAvailability.submit(new CheckHubicAvailabilityRunnable(inventory));
+		threadsAvailability.submit(new CheckHubicAvailabilityRunnable(repertoireNonChiffre, inventory));
 	}
 
 
