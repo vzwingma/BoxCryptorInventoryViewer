@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.boxcryptor.service.available.hubic.objects.HubicAPIContent;
+import com.terrier.boxcryptor.service.available.local.AvailabilityNotifier;
 import com.terrier.boxcryptor.utils.AbstractHTTPClient;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutEnum;
 import com.terrier.boxcryptor.viewer.enums.InventoryFileStatutObject;
@@ -46,6 +47,7 @@ public class CheckHubicAvailabilityFileRunnable extends AbstractHTTPClient imple
 	@Override
 	public void run() {
 		updateAvailability(this.inventaireStructure, this.contents);
+		AvailabilityNotifier.notifyOnlineAvailabilityUpdate(100 * (this.threadsAvailability.getPoolSize() - this.threadsAvailability.getActiveCount() + 1) / this.threadsAvailability.getPoolSize());
 	}
 
 
@@ -54,7 +56,7 @@ public class CheckHubicAvailabilityFileRunnable extends AbstractHTTPClient imple
 	 * @param inventaireStructure répertoire
 	 * @param rootRepertoire répertoire parent
 	 */
-	public void updateAvailability(AbstractBCInventaireStructure inventaireStructure, List<HubicAPIContent> contents){
+	private void updateAvailability(AbstractBCInventaireStructure inventaireStructure, List<HubicAPIContent> contents){
 
 		boolean found = rechercheOnlineAvailability(inventaireStructure.get_NomFichierChiffre(), contents);
 		LOGGER.info("Recherche de {} ({}) dans HUBIC : {}", inventaireStructure.get_NomFichierChiffre(), inventaireStructure.get_NomFichierClair(), found);

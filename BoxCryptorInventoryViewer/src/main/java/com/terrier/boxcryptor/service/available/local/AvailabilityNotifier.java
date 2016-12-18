@@ -45,4 +45,14 @@ public abstract class AvailabilityNotifier {
 			availabilityListener.itemAvailabilityUpdated(pourcentageAvancement);
 		}
 	}
+	
+	/**
+	 * Notification de la disponibilité
+	 * @param pourcentageAvancement pourcentage
+	 */
+	public static void notifyOnlineAvailabilityUpdate(int pourcentageAvancement){
+		for (AvailabilityListener availabilityListener : availabilityListeners) {
+			availabilityListener.itemOnlineAvailabilityUpdated(pourcentageAvancement);
+		}
+	}
 }

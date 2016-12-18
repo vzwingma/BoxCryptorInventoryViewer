@@ -60,7 +60,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 	private static final int RG_LABEL_RESULTAT = 1;
 	private static final int RG_TREE_TABLE_VIEW = 1;
 	private static final int RG_LABEL_INFO = 2;
-	
+
 
 
 
@@ -231,26 +231,48 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 
 
+	private int localPourcentage = 0;
+	private int onlinePourentage = 0;
+
 	/* (non-Javadoc)
 	 * @see com.terrier.boxcryptor.utils.AvailabilityListener#availabilityUpdated()
 	 */
 	@Override
 	public void itemAvailabilityUpdated(int pourcentage) {
-		
+		this.localPourcentage = pourcentage;
+		refresh();
+	}
+
+
+
+
+	/**
+	 * @param pourcentage
+	 */
+	@Override
+	public void itemOnlineAvailabilityUpdated(int pourcentage) {
+		this.onlinePourentage = pourcentage;
+		refresh();
+	}
+
+	/**
+	 * Refresh du tableau
+	 */
+	private void refresh(){
 		Platform.runLater(new Runnable() {
-			
+
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void run() {
 				if(findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class) != null){
-					LOGGER.trace ("Refresh : {}%", pourcentage);
+					LOGGER.trace ("Refresh");
 					((TreeTableColumn)findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).getColumns().get(1)).setVisible(false);
 					((TreeTableColumn)findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).getColumns().get(1)).setVisible(true);
 				}
 				if(findComponent(RG_LABEL_INFO, Label.class) != null){
-					findComponent(RG_LABEL_INFO, Label.class).setText("Génération de la disponibilité locale des fichiers : " + pourcentage + " %");
+					findComponent(RG_LABEL_INFO, Label.class).setText("Génération de la disponibilité locale des fichiers : " + localPourcentage + " %.  Génération de la disponibilité HUBIC des fichiers : " + onlinePourentage + " %");
 				}
 			}
 		});
-		
 	}
 }
