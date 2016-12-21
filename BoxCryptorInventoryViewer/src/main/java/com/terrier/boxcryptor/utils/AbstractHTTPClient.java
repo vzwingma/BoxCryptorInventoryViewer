@@ -42,13 +42,15 @@ public abstract class AbstractHTTPClient {
 		HttpResponse response = executeHTTPRequest(request);
 		if(response != null){
 			String rawResponse = readRawResponse(response);
-
 			if(response.getStatusLine().getStatusCode() == 200){	
 				return readJsonResponse(rawResponse, classEntityResponse);
 			}
 			else{
 				LOGGER.warn("La requête est en erreur [{}]", response.getStatusLine());
 			}
+		}
+		else{
+			LOGGER.error("Erreur la réponse est nulle");
 		}
 		return null;
 	}
@@ -64,7 +66,7 @@ public abstract class AbstractHTTPClient {
 			try {
 				LOGGER.debug("Exécution de la requête [{}]" , request.getURI());
 				HttpResponse response = httpClient.execute(request);
-				LOGGER.trace("Réponse {}", response.getStatusLine());
+				LOGGER.debug("Réponse {}", response.getStatusLine());
 				return response;
 			} catch (IOException e) {
 				LOGGER.error("Erreur lors de l'exécution de la requête [{}]" , request.getURI());
