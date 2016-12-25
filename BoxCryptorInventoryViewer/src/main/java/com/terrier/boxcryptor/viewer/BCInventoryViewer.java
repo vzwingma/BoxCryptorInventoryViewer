@@ -1,6 +1,7 @@
 package com.terrier.boxcryptor.viewer;
 
 import java.util.List;
+import java.util.jar.Manifest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,11 +84,12 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		if(unnamedParam != null){
 			this.service.chargeInventaire(unnamedParam[0], unnamedParam[1]);
 
+			String v = this.getClass().getPackage().getImplementationVersion();
 
 			/**
 			 * Show GUI
 			 */
-			primaryStage.setTitle("Inventory Viewer [" + unnamedParam[1] + "]");  
+			primaryStage.setTitle("Inventory Viewer " +v+" [" + unnamedParam[1] + "]");  
 			showGUI(primaryStage);
 		}
 	}
