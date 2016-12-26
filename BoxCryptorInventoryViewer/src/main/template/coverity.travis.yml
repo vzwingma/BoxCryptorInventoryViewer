@@ -1,0 +1,29 @@
+# Travis Lint : https://lint.travis-ci.org
+# Config secure
+language: java
+jdk:
+  - oraclejdk8
+env:
+  global:
+    # COVERITY_SCAN_TOKEN
+    # ** specific to your project **
+    - secure: "XzWQa7UADXVUf2I3rPm58BVplwwmldR32Cnv136K+294BnU+FGmCiqPY1PShdihqLKo02JqMaEZ7ov5Rha9WmoS7wZSEHx+H0us97A2nPU8cPmmGLGOjMBqcjW4B2mXLzGZBiOqPGcBkZRDIBSa3Ql+vRhfseLnQPVW8zEn12+5xWXFft5umrjKCDDqZREsWpgkQcZy06ftfEVRuvX48CCe/8jccQyPNG4wa7Gj99SFHCjE6MWkqBEGS99e6W32XlJ7SneEaNMl1xbnrd3G4w2eS534qunUtxci7GBUItAQPpVtu7RFQ87234WEKoFFRgQdSltTQp8/7879HsOyl8A6sJEP11FKAv7bZPZMC8/nZVHCIoWDl7fvpn3PwqVsGYElrMLjcRJRaRlvFRoOHG6yY/CWAtUcdQ/Tu6lFn6zs0YCpPgxkgNk1EFhPneP4fEWQ2lYtnpmWIDVL9Rozno/oo2jcsANYV2IV8/xClKc96Yw0l5apDRwxB1hSE8UlSKxRPNHMqAIpJSvKAKHu1b3x1gIBbFffgr/+miECUmdK4tEsgV3m/XtgXTxbNGuBSiTe9ewDxun0KW22RyP1STT1JE7DuMtwwc9jLWUGhxyNKQrkWPtruIZBpbut11k5fshVANzUOrGHx72hBjJVDeF24ewoKL5pr2D+GeA9Scko="
+addons:
+  coverity_scan:
+    # GitHub project metadata
+    project:
+      name: vzwingma/utilitaires
+    # Where email notification of build analysis results will be sent
+    notification_email: vincent.zwingmann@gmail.com
+    build_command_prepend: cd BoxCryptorInventoryViewer
+    # The command that will be added as an argument to "cov-build" to compile your project for analysis,
+    build_command: gradle build
+    # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+    # Take care in resource usage, and consider the build frequency allowances per
+    #   https://scan.coverity.com/faq#frequency
+    branch_pattern: coverity_scan
+before_install:
+  - cd BoxCryptorInventoryViewer
+install: 
+  - gradle build
+after_script: cat /home/travis/build/vzwingma/utilitaires/BoxCryptorInventoryViewer/cov-int/scm_log.txt
