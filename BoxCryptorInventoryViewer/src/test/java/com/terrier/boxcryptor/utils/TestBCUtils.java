@@ -37,55 +37,7 @@ public class TestBCUtils {
 		assertEquals(5, valuesSplitted.length);
 	}
 	
-	/**
-	 * Test dump and load YML file of inventory
-	 * @throws IOException error
-	 * @throws SecurityException error 
-	 * @throws NoSuchFieldException  error
-	 * @throws IllegalAccessException  error
-	 * @throws IllegalArgumentException  error
-	 */
-	@Test
-	public void testDumpYaml() throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-		System.setProperty("file.encoding","UTF-8");
-		Field charset = Charset.class.getDeclaredField("defaultCharset");
-		charset.setAccessible(true);
-		charset.set(null,null);
-		
-		
-		File testDir = new File("src/test/resources");
-		File inventoryFile = new File(testDir, BCUtils.INVENTORY_FILENAME);
-		// Prepare
-		if(inventoryFile.exists()){
-			inventoryFile.delete();
-		}
-		assertFalse(inventoryFile.exists());
-		// Dump
-		BCInventaireRepertoire testInventory = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "repertoire_clair");
-		testInventory.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊", "fichier_clair"));
-		testInventory.setDateModificationDernierInventaire(Calendar.getInstance().getTimeInMillis());
-		
-		BCInventaireRepertoire ssRepertoire = new BCInventaireRepertoire("倐徎婢冈呹忪僣庝左勓僣庝宽僣庝僣庝受䀊", "ss_repertoire_clair");
-		ssRepertoire.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊1", "fichier_ss_repertoire_clair"));
-		ssRepertoire.addFichier(new BCInventaireFichier("倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊2", "fichier2_ss_repertoire_clair"));
-		ssRepertoire.setDateModificationDernierInventaire(Calendar.getInstance().getTimeInMillis());
-		
-		
-		testInventory.addSSRepertoire(ssRepertoire);
-		
-		BCUtils.dumpYMLInventory(new File("src/test/resources"), testInventory);
-		
-		assertTrue(inventoryFile.exists());
-		
-		// Load
-		BCInventaireRepertoire loadedInventory = BCUtils.loadYMLInventory(testDir.getPath());
-		assertNotNull(loadedInventory);
-		
-		assertEquals(testInventory.get_NomFichierChiffre(), loadedInventory.get_NomFichierChiffre());
-		assertEquals(testInventory.get_NomFichierClair(), loadedInventory.get_NomFichierClair());
-		assertEquals(testInventory.getMapInventaireFichiers().values().iterator().next().get_NomFichierChiffre(), loadedInventory.getMapInventaireFichiers().values().iterator().next().get_NomFichierChiffre());
-		
-	}
+
 	
 	
 	/**
