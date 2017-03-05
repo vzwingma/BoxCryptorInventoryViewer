@@ -4,7 +4,9 @@
 package com.terrier.boxcryptor.viewer;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,6 +29,8 @@ public class BCInventoryService {
 
 	// Inventaire
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
+	
+	private Calendar dateInventory = Calendar.getInstance();
 	// Thread
 	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
@@ -42,6 +46,7 @@ public class BCInventoryService {
 	 */
 	public void chargeInventaire(String lecteur, String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(lecteur + "/" + repertoireNonChiffre);
+		this.dateInventory.setTimeInMillis(inventory.getDateModificationDernierInventaire());
 		this.inventoryItems  = getFullInventoryTreeItems(inventory);
 		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, lecteur, threadsAvailability));
 		threadsAvailability.submit(new CheckHubicAvailabilityRunnable(repertoireNonChiffre, inventory));
@@ -90,6 +95,14 @@ public class BCInventoryService {
 
 	}
 
+	
+	
+	/**
+	 * @return date de l'inventaire
+	 */
+	public Date getDateInventaire(){
+		return this.dateInventory.getTime();
+	}
 	/**
 	 * @param treeItem
 	 * @param searchValue

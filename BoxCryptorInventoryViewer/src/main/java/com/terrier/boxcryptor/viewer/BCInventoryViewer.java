@@ -1,7 +1,7 @@
 package com.terrier.boxcryptor.viewer;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.jar.Manifest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 	private final BCInventoryService service = new BCInventoryService();
 
-
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -119,7 +119,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		//Search field
 		final TextField searchField = new TextField();
 		searchField.setPromptText("Rechercher un nom en clair ou chiffrer");
-		searchField.setPrefWidth(1800);
+		searchField.setPrefWidth(1700);
 		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
 			this.showFilteredTreeItems(searchValue);
 		});
@@ -173,7 +173,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		int nbResultats = countElements(filteredInventoryItems);
 		LOGGER.debug(" >> [{}] résultats" , nbResultats);
 
-		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s)");
+		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s) au " + DATE_FORMAT.format(this.service.getDateInventaire()));
 
 		/**
 		 * Table de résultats
