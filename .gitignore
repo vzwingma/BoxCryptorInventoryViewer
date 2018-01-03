@@ -1,5 +1,7 @@
 *.classpath
-BoxCryptorListGenerator/.project
+.project
 bin
 .settings
-BoxCryptorInventoryViewer/.project
+/build/
+.gradle
+/viewer.log
