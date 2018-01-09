@@ -61,9 +61,10 @@ public abstract class AbstractHTTPClient {
 	 * @return réponse HTTP
 	 */
 	protected HttpResponse executeHTTPRequest(HttpRequestBase request){
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		
 		if(request != null){
 			try {
+				HttpClient httpClient = HttpClientBuilder.create().build();
 				LOGGER.debug("Exécution de la requête [{}]" , request.getURI());
 				HttpResponse response = httpClient.execute(request);
 				LOGGER.debug("Réponse {}", response.getStatusLine());

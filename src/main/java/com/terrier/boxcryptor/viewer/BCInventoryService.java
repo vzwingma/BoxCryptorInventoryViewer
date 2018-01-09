@@ -11,9 +11,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.boxcryptor.service.available.hubic.CheckHubicAvailabilityRunnable;
 import com.terrier.boxcryptor.service.available.local.CheckAvailabilityRunnable;
 import com.terrier.boxcryptor.utils.BCUtils;
+import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableMenuItems;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
@@ -29,13 +33,13 @@ public class BCInventoryService {
 
 	// Inventaire
 	private TreeItem<AbstractBCInventaireStructure> inventoryItems;
-	
+
 	private Calendar dateInventory = Calendar.getInstance();
 	// Thread
 	private ThreadPoolExecutor threadsAvailability = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(InventoryAvailableMenuItems.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BCInventoryService.class);
 	/**
 	 * 
 	 * @param repertoireNonChiffre
@@ -46,10 +50,15 @@ public class BCInventoryService {
 	 */
 	public void chargeInventaire(String lecteur, String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(lecteur + "/" + repertoireNonChiffre);
-		this.dateInventory.setTimeInMillis(inventory.getDateModificationDernierInventaire());
-		this.inventoryItems  = getFullInventoryTreeItems(inventory);
-		threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, lecteur, threadsAvailability));
-		threadsAvailability.submit(new CheckHubicAvailabilityRunnable(repertoireNonChiffre, inventory));
+		if(inventory != null){
+			this.dateInventory.setTimeInMillis(inventory.getDateModificationDernierInventaire());
+			this.inventoryItems  = getFullInventoryTreeItems(inventory);
+			threadsAvailability.submit(new CheckAvailabilityRunnable(inventory, lecteur, threadsAvailability));
+			threadsAvailability.submit(new CheckHubicAvailabilityRunnable(repertoireNonChiffre, inventory));
+		}
+		else{
+			LOGGER.warn("L'inventaire est introuvable  {}/{}", lecteur, repertoireNonChiffre);
+		}
 	}
 
 
@@ -95,8 +104,8 @@ public class BCInventoryService {
 
 	}
 
-	
-	
+
+
 	/**
 	 * @return date de l'inventaire
 	 */

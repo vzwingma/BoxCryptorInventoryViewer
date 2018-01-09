@@ -47,7 +47,9 @@ public class CheckHubicAvailabilityFileRunnable extends AbstractHTTPClient imple
 	@Override
 	public void run() {
 		updateAvailability(this.inventaireStructure, this.contents);
-		AvailabilityNotifier.notifyOnlineAvailabilityUpdate(100 * (this.threadsAvailability.getPoolSize() - this.threadsAvailability.getActiveCount() + 1) / this.threadsAvailability.getPoolSize());
+		// PoolSize:1
+		int poolSize = this.threadsAvailability.getPoolSize() > 0 ? this.threadsAvailability.getPoolSize() : 1;
+		AvailabilityNotifier.notifyOnlineAvailabilityUpdate(100 * (poolSize - this.threadsAvailability.getActiveCount() + 1) / poolSize);
 	}
 
 
