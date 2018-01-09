@@ -4,4 +4,4 @@
 
 <a href='https://travis-ci.org/vzwingma/BoxCryptorInventoryViewer'><img src='https://api.travis-ci.org/vzwingma/BoxCryptorInventoryViewer.svg?branch=master' alt='Build Status' /></a>
 <a href='https://github.com/vzwingma/BoxCryptorInventoryViewer/issues'><img src='http://githubbadges.herokuapp.com/vzwingma/BoxCryptorInventoryViewer/issues?style=square' alt='Issues number' /></a>
-<a href="https://scan.coverity.com/projects/vzwingma-utilitaires"><img alt="Coverity Scan Build Status" src="https://img.shields.io/coverity/scan/11280.svg"/></a>
+<a href="https://scan.coverity.com/projects/vzwingma-boxcryptorinventoryviewer"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/14814/badge.svg"/></a>
