@@ -14,5 +14,5 @@ deploy:
   file: BoxCryptorInventoryViewer.jar
   skip_cleanup: true  
   on:
-    repo: vzwingma/utilitaires
+    repo: vzwingma/BoxCryptorInventoryViewer
     tags: true
