@@ -6,10 +6,6 @@ sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-plugins {
-  id "org.sonarqube" version "2.6.2"
-}
-
 mainClassName = "com.terrier.boxcryptor.BoxCryptorInventoryManager"
 
 //create a single Jar with all dependencies
@@ -25,10 +21,13 @@ task fatJar(type: Jar) {
     with jar
 }
 
-
 dependencies {
     compile 'org.yaml:snakeyaml:1.19', 'ch.qos.logback:logback-classic:1.2.3', 'org.slf4j:slf4j-log4j12:1.7.25', 'org.apache.httpcomponents:httpclient:4.5.4', 'com.google.code.gson:gson:2.8.2'
     testCompile 'junit:junit:4.12', 'org.mockito:mockito-all:1.10.19'
+}
+
+plugins {
+  id "org.sonarqube" version "2.6.2"
 }
 
 repositories {
