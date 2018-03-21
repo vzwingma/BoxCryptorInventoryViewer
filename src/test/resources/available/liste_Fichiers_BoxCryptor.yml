@@ -1,15 +1,15 @@
 !!com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire
-_NomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊
-_NomFichierClair: repertoire_clair
+nomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊
+nomFichierClair: repertoire_clair
 dateModificationDernierInventaire: 1481976413911
 mapInventaireFichiers:
-  b97985395649ab57fd9e77ad0782f594: {_NomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊, _NomFichierClair: fichier_clair}
+  b97985395649ab57fd9e77ad0782f594: {nomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊, nomFichierClair: fichier_clair}
 mapInventaireSousRepertoires:
   2a47bbb6a48502b5919149bddf1982eb:
-    _NomFichierChiffre: 倐徎婢冈呹忪僣庝左勓僣庝宽僣庝僣庝受䀊
-    _NomFichierClair: ss_repertoire_clair
+    nomFichierChiffre: 倐徎婢冈呹忪僣庝左勓僣庝宽僣庝僣庝受䀊
+    nomFichierClair: ss_repertoire_clair
     dateModificationDernierInventaire: 1481976413911
     mapInventaireFichiers:
-      8b083abb86921d32a69d998dcb117bc2: {_NomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊1, _NomFichierClair: fichier_ss_repertoire_clair}
-      6eca7bcce64b9b2eddd3e611e648486b: {_NomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊2, _NomFichierClair: fichier2_ss_repertoire_clair}
+      8b083abb86921d32a69d998dcb117bc2: {nomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊1, nomFichierClair: fichier_ss_repertoire_clair}
+      6eca7bcce64b9b2eddd3e611e648486b: {nomFichierChiffre: 倐徎婢冈呹忪僣庝左勓嗊宽坻墒受䀊2, nomFichierClair: fichier2_ss_repertoire_clair}
     mapInventaireSousRepertoires: {}
