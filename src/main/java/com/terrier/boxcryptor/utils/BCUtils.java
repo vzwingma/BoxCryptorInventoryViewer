@@ -57,7 +57,8 @@ public class BCUtils {
 		Yaml yml = new Yaml(new BCInventaireYmlRepresenter());
 		File inventoryFile = new File(repertoire.getAbsolutePath(), BCUtils.INVENTORY_FILENAME);
 		if(!inventoryFile.exists()){
-			inventoryFile.createNewFile();
+			boolean c = inventoryFile.createNewFile();
+			LOGGER.info("Le fichier n'existe pas. Création {} du fichier {}", c, inventoryFile.getAbsolutePath());
 		}
 		
 		FileWriter inventoryWriter = new FileWriter(inventoryFile);

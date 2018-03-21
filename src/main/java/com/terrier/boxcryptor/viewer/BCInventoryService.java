@@ -6,7 +6,6 @@ package com.terrier.boxcryptor.viewer;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -121,11 +120,7 @@ public class BCInventoryService {
 					if(newTreeFileItem != null){
 						newTreeDirectoryItem.getChildren().add(newTreeFileItem);
 					}
-<<<<<<< Updated upstream
-				}
-=======
 				});
->>>>>>> Stashed changes
 				if(!newTreeDirectoryItem.getChildren().isEmpty()){			
 					return newTreeDirectoryItem;
 				}
