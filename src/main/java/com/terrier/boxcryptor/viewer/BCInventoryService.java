@@ -5,7 +5,6 @@ package com.terrier.boxcryptor.viewer;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -75,17 +74,7 @@ public class BCInventoryService {
 		}
 
 		// Sort
-		repertoireItem.getChildren().sort(new Comparator<TreeItem<AbstractBCInventaireStructure>>() {
-
-			/* (non-Javadoc)
-			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-			 */
-			@Override
-			public int compare(TreeItem<AbstractBCInventaireStructure> o1, TreeItem<AbstractBCInventaireStructure> o2) {
-				return o1.getValue().getNomFichierClair().compareToIgnoreCase(o2.getValue().getNomFichierClair());
-			}
-		});
-
+		repertoireItem.getChildren().sort((o1, o2) -> o1.getValue().getNomFichierClair().compareToIgnoreCase(o2.getValue().getNomFichierClair()));
 		return repertoireItem;
 	}
 
@@ -122,19 +111,21 @@ public class BCInventoryService {
 			newTreeDirectoryItem.setValue(treeItem.getValue());
 			// si c'est le  repertoire qui correspond
 			if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
-				for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
-					newTreeDirectoryItem.getChildren().add(subtreeItem);
-				}
+				treeItem.getChildren().stream().forEach(subtreeItem -> newTreeDirectoryItem.getChildren().add(subtreeItem));
 				return newTreeDirectoryItem;
 			}
 			// recherche des sous repertoires
 			else{
-				for (TreeItem<AbstractBCInventaireStructure> subtreeItem : treeItem.getChildren()) {
+				treeItem.getChildren().stream().forEach(subtreeItem -> {
 					TreeItem<AbstractBCInventaireStructure> newTreeFileItem = searchInTreeItem(subtreeItem, searchValue);
 					if(newTreeFileItem != null){
 						newTreeDirectoryItem.getChildren().add(newTreeFileItem);
 					}
+<<<<<<< Updated upstream
 				}
+=======
+				});
+>>>>>>> Stashed changes
 				if(!newTreeDirectoryItem.getChildren().isEmpty()){			
 					return newTreeDirectoryItem;
 				}

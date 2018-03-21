@@ -46,7 +46,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 	private final BCInventoryService service = new BCInventoryService();
 
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -171,7 +171,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		int nbResultats = countElements(filteredInventoryItems);
 		LOGGER.debug(" >> [{}] résultats" , nbResultats);
 
-		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s) au " + DATE_FORMAT.format(this.service.getDateInventaire()));
+		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s) au " + dateFormat.format(this.service.getDateInventaire()));
 
 		/**
 		 * Table de résultats
