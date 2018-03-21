@@ -7,7 +7,7 @@ notifications:
   slack: 
     secure: "ExpIuHBgYpH/pg1AbhWUpwFQAVrR8PkboA6i2N1L7UjLO50VgLa/ObSohIMjk3X7KDJdk4GE6CccpKm5P9hb99K6Nih8Inowg5aPKIZYAu8KQ41v7pPv2GHSsKNXv+RvVo7vYgEdrEPsab17Ok8dQei0bkV7/wuNYxA2JE94xEH9I3nWXaOT4A2sPhX+rlOQApToMUYJ4YOPU9drtrENwscjlAXMPoKG6nVHNo7+Ho6YNUhjifWiRUMBfDyIZihPwjEAXqAOdm7PzJAS0EkrcSONurNX4Qv9QwVie04w3IbQd2BXJiBJGuNU38owjbbc0epQOJA96UKcbI2ms1tdqAYSa/Mjl47Mg6DmKX37lZs3qOeaAeoVD4yN/83AeGoAck9UMY96riDN/YXbcPL30Ga0wDNEVe84udjLtBUk9Cciy4FsRCuo6WAfAgvEV+Vp+2CFxq4P32CO3wRA2ki8ooByv2f8hioU564dOkd6Sc0Hud5ZPHxbB5/b1aUfgcmN/kIeBjRioAxdTeNFhisb8OpjRboxHFuJMdEvxu1y6e05WLyOuvhpjrNZ0YIoTldr86Emm9K3eIf2n4gxJ8mS0eqlkwJO7qO4p5x+zioMbeo7s6UCqi8uVkDMYO04IdngVqSNg1zISY1HZjK85ufySo+aIgx7iFcoH3hgrJyMaRU="
 install: 
-  - gradle fatJar
+  - gradle sonarqube fatJar -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=$SONAR_ORG -Dsonar.projectKey=bx-inventory-viewer
 before_deploy:
   - cd build/libs
 deploy:
