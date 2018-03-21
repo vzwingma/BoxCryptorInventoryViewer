@@ -7,8 +7,6 @@ import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInv
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeTableCell;
@@ -30,8 +28,8 @@ public class InventoryMenuItems implements ChangeListener<String> {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryMenuItems.class);
-	
-	
+
+
 	private final TreeTableCell<AbstractBCInventaireStructure, String> cell;
 
 	/**
@@ -47,13 +45,7 @@ public class InventoryMenuItems implements ChangeListener<String> {
 		if (newValue != null) {
 			final ContextMenu cellMenu = new ContextMenu();
 			final MenuItem copiePPItem = new MenuItem("Copie dans le presse papier");
-			copiePPItem.setOnAction(new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					// Copie dans le presse papier
-					copyToClipboard(cell.getItem());
-				}
-			});
+			copiePPItem.setOnAction(e -> copyToClipboard(cell.getItem()));
 			cellMenu.getItems().add(copiePPItem);
 			cell.setContextMenu(cellMenu);
 		} else {

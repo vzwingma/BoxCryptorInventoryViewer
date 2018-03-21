@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.terrier.boxcryptor.service.available.hubic.CheckHubicAvailabilityRunnable;
 import com.terrier.boxcryptor.service.available.local.CheckAvailabilityRunnable;
 import com.terrier.boxcryptor.utils.BCUtils;
-import com.terrier.boxcryptor.viewer.factories.available.InventoryAvailableMenuItems;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInventaireStructure;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireFichier;
 import com.terrier.utilities.automation.bundles.boxcryptor.objects.BCInventaireRepertoire;
@@ -45,10 +44,8 @@ public class BCInventoryService {
 	 * @param repertoireNonChiffre
 	 * @return nom du répertoire root
 	 * @throws IOException
-	 * @throws ExecutionException 
-	 * @throws InterruptedException 
 	 */
-	public void chargeInventaire(String lecteur, String repertoireNonChiffre) throws IOException, InterruptedException, ExecutionException{
+	public void chargeInventaire(String lecteur, String repertoireNonChiffre) throws IOException {
 		BCInventaireRepertoire inventory = BCUtils.loadYMLInventory(lecteur + "/" + repertoireNonChiffre);
 		if(inventory != null){
 			this.dateInventory.setTimeInMillis(inventory.getDateModificationDernierInventaire());
@@ -68,10 +65,10 @@ public class BCInventoryService {
 	 * @param inventaireRepertoire  inventaireRépertoire
 	 */
 	private TreeItem<AbstractBCInventaireStructure> getFullInventoryTreeItems(final BCInventaireRepertoire inventaireRepertoire){
-		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<AbstractBCInventaireStructure> (inventaireRepertoire);
+		TreeItem<AbstractBCInventaireStructure> repertoireItem = new TreeItem<> (inventaireRepertoire);
 		repertoireItem.setExpanded(true);
 		for (final BCInventaireFichier inventaireFichier : inventaireRepertoire.getMapInventaireFichiers().values()) {
-			repertoireItem.getChildren().add(new TreeItem<AbstractBCInventaireStructure>(inventaireFichier));
+			repertoireItem.getChildren().add(new TreeItem<>(inventaireFichier));
 		}
 		for (final BCInventaireRepertoire inventaireSsRepertoire : inventaireRepertoire.getMapInventaireSousRepertoires().values()) {
 			repertoireItem.getChildren().add(getFullInventoryTreeItems(inventaireSsRepertoire));
@@ -85,7 +82,7 @@ public class BCInventoryService {
 			 */
 			@Override
 			public int compare(TreeItem<AbstractBCInventaireStructure> o1, TreeItem<AbstractBCInventaireStructure> o2) {
-				return o1.getValue().get_NomFichierClair().compareToIgnoreCase(o2.getValue().get_NomFichierClair());
+				return o1.getValue().getNomFichierClair().compareToIgnoreCase(o2.getValue().getNomFichierClair());
 			}
 		});
 
@@ -120,7 +117,7 @@ public class BCInventoryService {
 
 		// Add directory
 		if(treeItem.getValue() instanceof BCInventaireRepertoire){
-			TreeItem<AbstractBCInventaireStructure> newTreeDirectoryItem = new TreeItem<AbstractBCInventaireStructure>();
+			TreeItem<AbstractBCInventaireStructure> newTreeDirectoryItem = new TreeItem<>();
 			newTreeDirectoryItem.setExpanded(true);
 			newTreeDirectoryItem.setValue(treeItem.getValue());
 			// si c'est le  repertoire qui correspond
@@ -138,7 +135,7 @@ public class BCInventoryService {
 						newTreeDirectoryItem.getChildren().add(newTreeFileItem);
 					}
 				}
-				if(newTreeDirectoryItem.getChildren().size() > 0){			
+				if(!newTreeDirectoryItem.getChildren().isEmpty()){			
 					return newTreeDirectoryItem;
 				}
 				else{
@@ -147,7 +144,7 @@ public class BCInventoryService {
 			}
 		}
 		else if(BCUtils.searchTermsInInventory(treeItem.getValue(), searchValue)){
-			TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<AbstractBCInventaireStructure>();
+			TreeItem<AbstractBCInventaireStructure> newTreeFileItem = new TreeItem<>();
 			newTreeFileItem.setExpanded(true);
 			newTreeFileItem.setValue(treeItem.getValue());
 			return newTreeFileItem;

@@ -25,6 +25,8 @@ public class BoxCryptorInventoryManager {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BoxCryptorInventoryManager.class);
+	
+	private static final String UTF8 = "UTF-8";
 
 	/**
 	 * Classe main
@@ -34,7 +36,7 @@ public class BoxCryptorInventoryManager {
 	public static void main(String[] args) throws Exception {
 
 		// Forcage en UTF-8 pour les caractères chinois utilisés par BC
-		System.setProperty("file.encoding","UTF-8");
+		System.setProperty("file.encoding",UTF8);
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
 		charset.set(null,null);
@@ -53,7 +55,7 @@ public class BoxCryptorInventoryManager {
 	 * @return Chemin du répertoire
 	 */
 	private static String getPaths(String arg, boolean unCryptedDir){
-		Scanner entree =   new Scanner(System.in, "UTF-8");
+		Scanner entree =   new Scanner(System.in, UTF8);
 		String cheminRepertoireDonnees = "";
 		if(arg != null){
 			cheminRepertoireDonnees = arg;
@@ -65,7 +67,7 @@ public class BoxCryptorInventoryManager {
 			else{
 				LOGGER.info("Entrez le répertoire CHIFFRE (D:)");
 			}
-			cheminRepertoireDonnees = new String(entree.nextLine().getBytes(), Charset.forName("UTF-8"));
+			cheminRepertoireDonnees = new String(entree.nextLine().getBytes(), Charset.forName(UTF8));
 		}
 		File repertoireDonnees = new File(cheminRepertoireDonnees);
 		LOGGER.info("> Le répertoire ({}) {} existe : {}", repertoireDonnees.isDirectory(), repertoireDonnees.getName(), repertoireDonnees.exists());

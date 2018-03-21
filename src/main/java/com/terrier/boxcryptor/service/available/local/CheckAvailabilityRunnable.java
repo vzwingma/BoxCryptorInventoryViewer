@@ -54,7 +54,7 @@ public class CheckAvailabilityRunnable implements Runnable {
 	public void run() {
 		updateAvailability(this.inventoryItems, repertoireNonChiffre);
 		LOGGER.debug("Check de la disponbilité de {})", 
-				this.inventoryItems.get_NomFichierClair());
+				this.inventoryItems.getNomFichierClair());
 		AvailabilityNotifier.notifyAvailabilityUpdate(100 * (this.threadsAvailability.getPoolSize() - this.threadsAvailability.getActiveCount() + 1) / this.threadsAvailability.getPoolSize());
 	}
 
@@ -66,14 +66,14 @@ public class CheckAvailabilityRunnable implements Runnable {
 	 */
 	private void updateAvailability(BCInventaireRepertoire repertoire, String rootRepertoire){
 		
-		repertoire.setStatutFichierClair(isFileAvailable(rootRepertoire, repertoire.get_NomFichierClair()));
+		repertoire.setStatutFichierClair(isFileAvailable(rootRepertoire, repertoire.getNomFichierClair()));
 		
 		for (BCInventaireFichier fichier : repertoire.getMapInventaireFichiers().values()) {
-			fichier.setStatutFichierClair(isFileAvailable(rootRepertoire + "/" + repertoire.get_NomFichierClair(), fichier.get_NomFichierClair()));	
+			fichier.setStatutFichierClair(isFileAvailable(rootRepertoire + "/" + repertoire.getNomFichierClair(), fichier.getNomFichierClair()));	
 		}
 		
 		for (BCInventaireRepertoire ssRepertoire : repertoire.getMapInventaireSousRepertoires().values()) {
-			this.threadsAvailability.submit(new CheckAvailabilityRunnable(ssRepertoire, rootRepertoire + "/" + repertoire.get_NomFichierClair(), this.threadsAvailability));	
+			this.threadsAvailability.submit(new CheckAvailabilityRunnable(ssRepertoire, rootRepertoire + "/" + repertoire.getNomFichierClair(), this.threadsAvailability));	
 		}
 	}
 	

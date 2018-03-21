@@ -18,6 +18,7 @@ public class InventoryFileStatutObject {
 	// Statut
 	private InventoryFileStatutEnum statut = InventoryFileStatutEnum.INCONNU;
 
+	private static final String IMAGE_PATH = "/images/";
 	
 	public InventoryFileStatutObject(Path cheminFichier, InventoryFileStatutEnum statut){
 		this.cheminFichier = cheminFichier;
@@ -58,14 +59,10 @@ public class InventoryFileStatutObject {
 	 * @return icon de l'objet
 	 */
 	public String getIcon(){
-		String imagePath = "/images/";
-		InventoryFileStatutEnum statut = InventoryFileStatutEnum.INCONNU;
-		if(this == null || this.getStatut() == null){
+		if(this.statut == null){
 			statut = InventoryFileStatutEnum.INDISPONIBLE;
 		}
-		else{
-			statut = this.getStatut();
-		}
+		String imagePath = IMAGE_PATH;
 		switch (statut) {
 		case INCONNU:
 			imagePath += "circle_ukn.png";

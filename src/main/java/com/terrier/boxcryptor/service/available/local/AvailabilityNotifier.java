@@ -16,8 +16,10 @@ public abstract class AvailabilityNotifier {
 	/**
 	 * Listement de la disponibilité
 	 */
-	private static final List<AvailabilityListener> availabilityListeners = new ArrayList<AvailabilityListener>();
+	private static final List<AvailabilityListener> availabilityListeners = new ArrayList<>();
 
+	// Constructeur privé
+	private AvailabilityNotifier(){}
 	
 	/**
 	 * Enregistrement des listeners
