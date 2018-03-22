@@ -33,6 +33,9 @@ public class BCUtils {
 	// Regex to split search values
 	protected static final String SPLIT_REGEX = "[ _-]";
 	
+	// Constructeur privé
+	private BCUtils(){}
+	
 	/**
 	 * Print delay from startTraitementCal
 	 * @param treatementName  name of treatment
@@ -54,7 +57,8 @@ public class BCUtils {
 		Yaml yml = new Yaml(new BCInventaireYmlRepresenter());
 		File inventoryFile = new File(repertoire.getAbsolutePath(), BCUtils.INVENTORY_FILENAME);
 		if(!inventoryFile.exists()){
-			inventoryFile.createNewFile();
+			boolean c = inventoryFile.createNewFile();
+			LOGGER.info("Le fichier n'existe pas. Création {} du fichier {}", c, inventoryFile.getAbsolutePath());
 		}
 		
 		FileWriter inventoryWriter = new FileWriter(inventoryFile);
@@ -98,8 +102,8 @@ public class BCUtils {
 			
 			boolean found = true;
 			for (String search : allSearchValues) {
-				found &= inventoryItem.get_NomFichierChiffre().toUpperCase().contains(search.toUpperCase())
-						|| inventoryItem.get_NomFichierClair().toUpperCase().contains(search.toUpperCase());
+				found &= inventoryItem.getNomFichierChiffre().toUpperCase().contains(search.toUpperCase())
+						|| inventoryItem.getNomFichierClair().toUpperCase().contains(search.toUpperCase());
 			}
 			return found;
 		}

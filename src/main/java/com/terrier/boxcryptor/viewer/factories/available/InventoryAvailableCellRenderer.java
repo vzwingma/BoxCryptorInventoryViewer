@@ -31,18 +31,14 @@ public class InventoryAvailableCellRenderer implements ObservableValue<Node>  {
 		this.cell = cell;
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.beans.value.ObservableValue#addListener(javafx.beans.value.ChangeListener)
-	 */
-	@Override
-	public void addListener(ChangeListener<? super Node> listener) { 
-	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see javafx.beans.value.ObservableValue#removeListener(javafx.beans.value.ChangeListener)
 	 */
 	@Override
-	public void removeListener(ChangeListener<? super Node> listener) { }
+	public void removeListener(ChangeListener<? super Node> listener) {
+		// Rien à faire
+	}
 
 	/* (non-Javadoc)
 	 * @see javafx.beans.value.ObservableValue#getValue()
@@ -59,9 +55,28 @@ public class InventoryAvailableCellRenderer implements ObservableValue<Node>  {
 		return livePerformIcon;
 	}
 
+	/* (non-Javadoc)
+	 * @see javafx.beans.Observable#addListener(javafx.beans.InvalidationListener)
+	 */
 	@Override
-	public void addListener(InvalidationListener listener) { }
+	public void addListener(InvalidationListener listener) {
+		// Rien à faire
+	}
 
+	/* (non-Javadoc)
+	 * @see javafx.beans.Observable#removeListener(javafx.beans.InvalidationListener)
+	 */
 	@Override
-	public void removeListener(InvalidationListener listener) { }
+	public void removeListener(InvalidationListener listener) {
+		// Rien à faire
+	}
+
+
+	/* (non-Javadoc)
+	 * @see javafx.beans.value.ObservableValue#addListener(javafx.beans.value.ChangeListener)
+	 */
+	@Override
+	public void addListener(ChangeListener<? super Node> listener) {
+		// Rien à faire
+	}
 }

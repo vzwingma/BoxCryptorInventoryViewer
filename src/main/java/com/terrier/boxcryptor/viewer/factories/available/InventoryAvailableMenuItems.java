@@ -11,8 +11,6 @@ import com.terrier.utilities.automation.bundles.boxcryptor.objects.AbstractBCInv
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeTableCell;
@@ -30,7 +28,7 @@ public class InventoryAvailableMenuItems implements ChangeListener<InventoryFile
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryAvailableMenuItems.class);
-	
+
 	private final TreeTableCell<AbstractBCInventaireStructure, InventoryFileStatutObject> cell;
 
 	/**
@@ -44,25 +42,19 @@ public class InventoryAvailableMenuItems implements ChangeListener<InventoryFile
 	public void changed(ObservableValue<? extends InventoryFileStatutObject> obs,
 			InventoryFileStatutObject oldValue, InventoryFileStatutObject newValue) {
 		if (newValue != null && newValue.getStatut() != null && newValue.getStatut().equals(InventoryFileStatutEnum.DISPONIBLE)) {
-			
+
 			final MenuItem getContentItem = new MenuItem("Accéder au fichier");
-			getContentItem.setOnAction(new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					// Copie dans le presse papier
-					
-					try {
-						Runtime rt = Runtime.getRuntime();
-						LOGGER.info("Ouverture du fichier [{}]", newValue.getCheminFichier());
-						rt.exec("explorer "+newValue.getCheminFichier());
-					} catch (IOException e) {
-						LOGGER.error("Erreur lors du chargement du fichier [{}]", newValue.getCheminFichier(), e);
-					}
-					
+			getContentItem.setOnAction(event -> {
+				try {
+					Runtime rt = Runtime.getRuntime();
+					LOGGER.info("Ouverture du fichier [{}]", newValue.getCheminFichier());
+					rt.exec("explorer "+newValue.getCheminFichier());
+				} catch (IOException e) {
+					LOGGER.error("Erreur lors du chargement du fichier [{}]", newValue.getCheminFichier(), e);
 				}
 			});
-			
-			
+
+
 			final ContextMenu cellMenu = new ContextMenu();
 			cellMenu.getItems().add(getContentItem);
 			cell.setContextMenu(cellMenu);

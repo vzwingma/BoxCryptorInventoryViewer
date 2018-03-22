@@ -46,7 +46,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 
 	private final BCInventoryService service = new BCInventoryService();
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	/**
 	 * Start of inventory viewer
 	 * @param cheminNonChiffre
@@ -120,9 +120,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		final TextField searchField = new TextField();
 		searchField.setPromptText("Rechercher un nom en clair ou chiffrer");
 		searchField.setPrefWidth(1700);
-		searchField.textProperty().addListener((observable, oldValue, searchValue) -> {
-			this.showFilteredTreeItems(searchValue);
-		});
+		searchField.textProperty().addListener((observable, oldValue, searchValue) -> this.showFilteredTreeItems(searchValue));
 		searchPane.getChildren().add(searchField);
 
 		// Result label
@@ -173,12 +171,12 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 		int nbResultats = countElements(filteredInventoryItems);
 		LOGGER.debug(" >> [{}] résultats" , nbResultats);
 
-		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s) au " + DATE_FORMAT.format(this.service.getDateInventaire()));
+		findComponent(findComponent(RG_FLOWPANE, FlowPane.class), RG_LABEL_RESULTAT, Label.class).setText(nbResultats + " résultat(s) au " + dateFormat.format(this.service.getDateInventaire()));
 
 		/**
 		 * Table de résultats
 		 */
-		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<AbstractBCInventaireStructure>(filteredInventoryItems);
+		TreeTableView<AbstractBCInventaireStructure> treeTableView = new TreeTableView<>(filteredInventoryItems);
 
 		TreeTableColumn<AbstractBCInventaireStructure, String> uncryptedDataColumn = new TreeTableColumn<>("Nom de fichier en clair");
 		uncryptedDataColumn.setPrefWidth((Screen.getPrimary().getVisualBounds().getWidth() - 300)/2);
@@ -262,11 +260,7 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 	 * Refresh du tableau
 	 */
 	private void refresh(){
-		Platform.runLater(new Runnable() {
-
-			@SuppressWarnings("rawtypes")
-			@Override
-			public void run() {
+		Platform.runLater(() -> {
 				if(findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class) != null){
 					LOGGER.trace ("Refresh");
 					((TreeTableColumn)findComponent(RG_TREE_TABLE_VIEW, TreeTableView.class).getColumns().get(1)).setVisible(false);
@@ -275,7 +269,6 @@ public class BCInventoryViewer extends AbstractBCInventoryApplication {
 				if(findComponent(RG_LABEL_INFO, Label.class) != null){
 					findComponent(RG_LABEL_INFO, Label.class).setText("Génération de la disponibilité locale des fichiers : " + localPourcentage + " %.  Génération de la disponibilité HUBIC des fichiers : " + onlinePourentage + " %");
 				}
-			}
-		});
+			});
 	}
 }

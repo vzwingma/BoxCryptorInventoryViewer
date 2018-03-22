@@ -42,13 +42,13 @@ public class InventoryAvailableCellValueFactory implements Callback<TreeTableCol
 		ReadOnlyObjectWrapper<InventoryFileStatutObject> valeurCell = null;
 		switch (cellType) {
 		case STATUT_FICHIER_CHIFFRE:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(param.getValue().getValue().getStatutFichierChiffre());
+			valeurCell = new ReadOnlyObjectWrapper<>(param.getValue().getValue().getStatutFichierChiffre());
 			break;
 		case STATUT_FICHIER_CLAIR:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(param.getValue().getValue().getStatutFichierClair());
+			valeurCell = new ReadOnlyObjectWrapper<>(param.getValue().getValue().getStatutFichierClair());
 			break;			
 		default:
-			valeurCell = new ReadOnlyObjectWrapper<InventoryFileStatutObject>(InventoryFileStatutEnum.INCONNU, null);
+			valeurCell = new ReadOnlyObjectWrapper<>(InventoryFileStatutEnum.INCONNU, null);
 			break;
 		}
 		return valeurCell;

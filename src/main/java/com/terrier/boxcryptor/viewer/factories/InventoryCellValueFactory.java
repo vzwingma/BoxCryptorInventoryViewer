@@ -40,10 +40,10 @@ public class InventoryCellValueFactory implements Callback<TreeTableColumn.CellD
 		ReadOnlyStringWrapper valeurCell = null;
 		switch (cellType) {
 		case NOM_FICHIER_CLAIR:
-			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierClair());
+			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().getNomFichierClair());
 			break;
 		case NOM_FICHIER_CHIFFRE:
-			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().get_NomFichierChiffre());
+			valeurCell = new ReadOnlyStringWrapper(param.getValue().getValue().getNomFichierChiffre());
 			break;	
 		default:
 			valeurCell = new ReadOnlyStringWrapper("???");

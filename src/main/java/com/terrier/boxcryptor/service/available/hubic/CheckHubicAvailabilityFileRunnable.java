@@ -60,8 +60,8 @@ public class CheckHubicAvailabilityFileRunnable extends AbstractHTTPClient imple
 	 */
 	private void updateAvailability(AbstractBCInventaireStructure inventaireStructure, List<HubicAPIContent> contents){
 
-		boolean found = rechercheOnlineAvailability(inventaireStructure.get_NomFichierChiffre(), contents);
-		LOGGER.info("Recherche de {} ({}) dans HUBIC : {}", inventaireStructure.get_NomFichierChiffre(), inventaireStructure.get_NomFichierClair(), found);
+		boolean found = rechercheOnlineAvailability(inventaireStructure.getNomFichierChiffre(), contents);
+		LOGGER.info("Recherche de {} ({}) dans HUBIC : {}", inventaireStructure.getNomFichierChiffre(), inventaireStructure.getNomFichierClair(), found);
 		inventaireStructure.setStatutFichierChiffre(new InventoryFileStatutObject(null, found ? InventoryFileStatutEnum.DISPONIBLE : InventoryFileStatutEnum.INDISPONIBLE));
 
 		if(inventaireStructure instanceof BCInventaireRepertoire){
